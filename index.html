@@ -924,11 +924,7 @@
         line-height: 1.35;
       }
 
-      /* Identificação (Página 2) */
-      .page-ident {
-        break-after: page;
-        page-break-after: always;
-      }
+
 
       /* Layout de repetição de Cabeçalho e Rodapé a partir da Página 3 */
       table.rep-layout {
@@ -1044,6 +1040,53 @@
         line-height: 1.35 !important;
         text-align: center !important;
         text-indent: 0 !important;
+      }
+
+      
+      /* Sumário ABNT NBR 6027 */
+      .abnt-sumario {
+        page-break-after: always;
+        break-after: page;
+        padding: 6pt 0 16pt;
+      }
+
+      .sumario-title {
+        font: 700 12pt Arial !important;
+        text-align: center !important;
+        text-transform: uppercase !important;
+        margin: 6pt 0 22pt !important;
+        letter-spacing: 1px;
+      }
+
+      .sumario-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10pt;
+      }
+
+      .sumario-row {
+        display: flex;
+        align-items: baseline;
+        font-size: 10pt;
+        font-weight: 700;
+        color: #000;
+      }
+
+      .sumario-num-title {
+        white-space: nowrap;
+      }
+
+      .sumario-dots {
+        flex-grow: 1;
+        border-bottom: 1px dotted #333;
+        margin: 0 5pt;
+        height: 1em;
+      }
+
+      .sumario-page {
+        min-width: 16pt;
+        text-align: right;
+        font-weight: 700;
       }
 
       /* Tipografia do Relatório */
@@ -1876,7 +1919,7 @@
       await Promise.all((D.anexo || []).filter(r => r.id).map(r => getFoto(r.id)));
       const id = D.ident || {}, F = D.fim || {};
 
-      // 1. Capa (Página 1 - sem cabeçalho/rodapé repetido)
+      // 1. Capa (Página 1 - sem cabeçalho nem rodapé)
       let h = `<div class="cover">
         <div>
           <img src="${LOGOC}" alt="">
@@ -1896,23 +1939,7 @@
         </div>
       </div>`;
 
-      // 2. Identificação da Unidade Escolar (Página 2 - sem cabeçalho/rodapé repetido)
-      h += `<div class="page-ident">
-        <h1>Identificação da unidade escolar</h1>` +
-        tb(['Campo', 'Informação'], [
-          ['Unidade escolar', ESC],
-          ['Diretor(a)', id.diretor],
-          ['Vice-diretor(a)', id.vice],
-          ['Coordenador(a) pedagógico(a)', id.coord],
-          ['Estudantes matriculados', id.matric],
-          ['Quantidade de turmas', id.turmas],
-          ['Turnos de funcionamento', (id.turnos || []).join(', ')],
-          ['Etapas e modalidades', (id.etapas || []).join(', ')],
-          ['Data de elaboração', id.data ? id.data.split('-').reverse().join('/') : '']
-        ]) +
-      `</div>`;
-
-      // 3. Páginas 3+: Cabeçalho e Rodapé oficiais SEMED repetidos em todas as páginas
+      // 2. Páginas 2 em diante: com Cabeçalho e Rodapé Oficiais
       h += `<table class="rep-layout">
         <thead>
           <tr>
@@ -1934,15 +1961,94 @@
         </thead>
         <tbody>
           <tr>
-            <td>`;
+            <td>
+              <!-- PÁGINA 2: SUMÁRIO ABNT NBR 6027 -->
+              <div class="abnt-sumario">
+                <div class="sumario-title">SUMÁRIO</div>
+                <div class="sumario-list">
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">1 IDENTIFICAÇÃO DA UNIDADE ESCOLAR</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-ident">3</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">2 DIMENSÃO PEDAGÓGICA E AVALIATIVA</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-1">3</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">3 DIMENSÃO ADMINISTRATIVA E ORGANIZACIONAL</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-2">4</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">4 FUNCIONÁRIOS E VIDA ESCOLAR</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-3">4</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">5 INFRAESTRUTURA</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-4">5</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">6 FAMÍLIA E COMUNIDADE</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-5">5</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">7 EDUCAÇÃO INCLUSIVA</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-6">6</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">8 AVALIAÇÃO DA SEMED</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-7">6</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">9 CONSIDERAÇÕES FINAIS</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-dim-8">7</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">10 ANEXO – EVIDÊNCIAS REGISTRADAS</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-anexo">7</span>
+                  </div>
+                  <div class="sumario-row">
+                    <span class="sumario-num-title">11 ASSINATURAS</span>
+                    <span class="sumario-dots"></span>
+                    <span class="sumario-page" data-sum-target="sec-sg">8</span>
+                  </div>
+                </div>
+              </div>
 
-      let sec = '', sub = '';
+              <!-- PÁGINA 3 EM DIANTE: IDENTIFICAÇÃO E CONTINUAÇÃO DIRETA SEM QUEBRA -->
+              <h1 id="sec-ident">1. IDENTIFICAÇÃO DA UNIDADE ESCOLAR</h1>` +
+              tb(['Campo', 'Informação'], [
+                ['Unidade escolar', ESC],
+                ['Diretor(a)', id.diretor],
+                ['Vice-diretor(a)', id.vice],
+                ['Coordenador(a) pedagógico(a)', id.coord],
+                ['Estudantes matriculados', id.matric],
+                ['Quantidade de turmas', id.turmas],
+                ['Turnos de funcionamento', (id.turnos || []).join(', ')],
+                ['Etapas e modalidades', (id.etapas || []).join(', ')],
+                ['Data de elaboração', id.data ? id.data.split('-').reverse().join('/') : '']
+              ]);
+
+      // Conteúdo das seções
+      let sec = '', sub = '', secCount = 1;
       S.forEach(s => {
         if (['ident', 'fim'].includes(s.id)) return;
         if (s.sec != sec) {
           sec = s.sec;
           sub = '';
-          h += `<h1>${esc(sec.replace(/^(\d)\.\s*(.)/, (m, a, b) => a + ' ' + b).toUpperCase())}</h1>`;
+          secCount++;
+          const secClean = sec.replace(/^(\d)\.\s*/, '').toUpperCase();
+          const targetId = s.id === 'anexo' ? 'sec-anexo' : `sec-dim-${secCount - 1}`;
+          h += `<h1 id="${targetId}">${secCount}. ${esc(secClean)}</h1>`;
         }
         if (s.sub && s.sub != sub) {
           sub = s.sub;
@@ -1962,7 +2068,8 @@
       });
 
       const dt = id.data ? id.data.split('-').reverse().join('/') : '';
-      h += `<h1>Assinaturas</h1><p style="text-indent:0">Lagoa da Canoa – AL, ${esc(dt)}.</p><div class="sg"><div>${esc(F.dir || 'Diretor(a)')}<br>Diretor(a)</div><div>${esc(F.coord || 'Coordenador(a)')}<br>Coordenador(a) pedagógico(a)</div><div>${esc(F.demais || '')}<br>Demais representantes da equipe diretiva</div></div>`;
+      h += `<h1 id="sec-sg">11. ASSINATURAS</h1><p style="text-indent:0">Lagoa da Canoa – AL, ${esc(dt)}.</p><div class="sg"><div>${esc(F.dir || 'Diretor(a)')}<br>Diretor(a)</div><div>${esc(F.coord || 'Coordenador(a)')}<br>Coordenador(a) pedagógico(a)</div><div>${esc(F.demais || '')}<br>Demais representantes da equipe diretiva</div></div>`;
+      h += `<div id="rep-last-spacer"></div>`;
 
       h += `</td>
           </tr>
@@ -1984,7 +2091,35 @@
 
       $('#rep').innerHTML = h;
       document.body.classList.add('pr');
-      setTimeout(() => { window.print(); document.body.classList.remove('pr') }, 300);
+
+      // Atualiza dinamicamente a paginação do Sumário e o espaçador da última página
+      setTimeout(() => {
+        try {
+          const pageH = 888;
+          const ident = document.getElementById('sec-ident');
+          if (ident) {
+            const startTop = ident.offsetTop;
+            document.querySelectorAll('[data-sum-target]').forEach(sp => {
+              const el = document.getElementById(sp.dataset.sumTarget);
+              if (el) {
+                const diff = Math.max(0, el.offsetTop - startTop);
+                sp.textContent = Math.floor(diff / pageH) + 3;
+              }
+            });
+            const lastTd = document.querySelector('table.rep-layout > tbody > tr > td');
+            if (lastTd) {
+              const rem = lastTd.offsetHeight % pageH;
+              if (rem > 0 && rem < pageH - 80) {
+                const spacer = document.getElementById('rep-last-spacer');
+                if (spacer) spacer.style.height = (pageH - rem - 30) + 'px';
+              }
+            }
+          }
+        } catch (e) {}
+
+        window.print();
+        document.body.classList.remove('pr');
+      }, 300);
     }
 
     R.bind.anexo = s => {
