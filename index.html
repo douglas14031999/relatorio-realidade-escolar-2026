@@ -865,13 +865,13 @@
       max-width: 200px
     }
 
+    /* Configurações estruturais e tipográficas do Relatório (compartilhadas entre medição em tela e impressão) */
     #rep {
       display: none;
-    }
-
-    /* #rep fica estritamente oculto na interface de tela normal */
-    #rep {
-      display: none;
+      font: 11pt/1.5 Arial, Helvetica, sans-serif;
+      color: #000;
+      text-align: justify;
+      background: #fff;
     }
 
     /* Na medição pré-impressão em tela, renderiza fora do campo de visão (off-screen)
@@ -887,6 +887,44 @@
       z-index: -9999 !important;
     }
 
+    /* Capa (Página 1) */
+    .cover {
+      width: 100% !important;
+      max-width: 21cm !important;
+      height: 29.7cm !important;
+      padding: 2.5cm 2.0cm !important;
+      box-sizing: border-box !important;
+      margin: 0 auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      text-align: center !important;
+      break-after: page !important;
+      page-break-after: always !important;
+    }
+
+    .cover img {
+      height: 2.5cm;
+      display: block;
+      margin: 0 auto 12pt;
+    }
+
+    .cover b {
+      display: block;
+      line-height: 1.35;
+    }
+
+    /* Bloco isolado de Assinaturas (Sempre na última página e sem quebrar) */
+    .sec-sg-wrap {
+      break-before: page !important;
+      page-break-before: always !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      padding-top: 10pt;
+    }
+
+    /* Layout de repetição de Cabeçalho e Rodapé a partir da Página 2 */
     table.rep-layout {
       width: 17cm !important;
       margin: 0 auto !important;
@@ -895,8 +933,257 @@
       padding: 0 !important;
     }
 
+    table.rep-layout > thead {
+      display: table-header-group;
+    }
+
+    table.rep-layout > tfoot {
+      display: table-footer-group;
+    }
+
+    table.rep-layout > thead > tr > td {
+      border: none !important;
+      padding: 1.2cm 0 10pt 0 !important;
+      background: transparent !important;
+    }
+
+    table.rep-layout > tfoot > tr > td {
+      border: none !important;
+      padding: 10pt 0 1.2cm 0 !important;
+      background: transparent !important;
+    }
+
+    table.rep-layout > tbody > tr > td {
+      border: none !important;
+      padding: 0 !important;
+      background: transparent !important;
+    }
+
+    /* Cabeçalho Oficial SEMED */
+    .rep-header {
+      width: 100%;
+      padding-bottom: 2pt;
+    }
+
+    .rep-header-top {
+      display: flex;
+      align-items: center;
+      gap: 12pt;
+      margin-bottom: 6pt;
+    }
+
+    .rep-header-logo {
+      height: 48pt;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .rep-header-titles {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+      line-height: 1.25;
+    }
+
+    .rep-header-titles .h-line1 {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.3px;
+    }
+
+    .rep-header-titles .h-line2 {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.3px;
+    }
+
+    .rep-header-titles .h-line3 {
+      font-size: 11.5pt;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: 0.3px;
+    }
+
+    .rep-header-titles .h-line4 {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.3px;
+    }
+
+    .rep-tricolor-bar {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, #438c7c 0%, #438c7c 33.33%, #f88c45 33.33%, #f88c45 66.66%, #eb3073 66.66%, #eb3073 100%) !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      display: block;
+    }
+
+    /* Rodapé Oficial SEMED */
+    .rep-footer {
+      width: 100%;
+      padding-top: 2pt;
+      text-align: center;
+    }
+
+    .rep-footer-text {
+      margin: 5pt 0 0 !important;
+      font-size: 7.5pt !important;
+      color: #333 !important;
+      line-height: 1.35 !important;
+      text-align: center !important;
+      text-indent: 0 !important;
+    }
+
+    /* Sumário ABNT NBR 6027 */
+    .abnt-sumario {
+      page-break-after: always;
+      break-after: page;
+      padding: 6pt 0 16pt;
+    }
+
+    .sumario-title {
+      font: 700 12pt Arial !important;
+      text-align: center !important;
+      text-transform: uppercase !important;
+      margin: 6pt 0 22pt !important;
+      letter-spacing: 1px;
+    }
+
+    .sumario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10pt;
+    }
+
+    .sumario-row {
+      display: flex;
+      align-items: baseline;
+      font-size: 10pt;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .sumario-num-title {
+      white-space: nowrap;
+    }
+
+    .sumario-dots {
+      flex-grow: 1;
+      border-bottom: 1px dotted #333;
+      margin: 0 5pt;
+      height: 1em;
+    }
+
+    .sumario-page {
+      min-width: 16pt;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* Tipografia do Relatório */
+    #rep h1 {
+      font: 700 12pt Arial;
+      text-transform: uppercase;
+      margin: 18pt 0 8pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    #rep h2 {
+      font: 700 11pt Arial;
+      margin: 14pt 0 6pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    #rep p {
+      margin: 0 0 6pt;
+      text-indent: 1.25cm;
+      text-align: justify;
+    }
+
+    #rep p.q {
+      text-indent: 0;
+      font-style: italic;
+      margin-top: 8pt;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    #rep table:not(.rep-layout) {
+      min-width: 0;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      line-height: 1.25;
+      margin: 6pt 0;
+      break-inside: auto;
+    }
+
+    #rep table:not(.rep-layout) td,
+    #rep table:not(.rep-layout) th {
+      border: 1px solid #000;
+      padding: 3pt 5pt;
+      background: #fff;
+      color: #000;
+      text-align: left;
+    }
+
+    #rep table:not(.rep-layout) tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Evidências registradas com tamanho delimitado */
+    #rep .ev-item {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      text-align: center;
+      margin: 10pt auto 14pt;
+    }
+
+    #rep .ev-item img {
+      max-width: 10.5cm !important;
+      max-height: 5.5cm !important;
+      width: auto !important;
+      height: auto !important;
+      object-fit: contain !important;
+      display: block !important;
+      margin: 0 auto 4pt !important;
+      border: 1px solid #d0d7de;
+      border-radius: 4px;
+    }
+
+    #rep .ev-cap {
+      font-size: 9.5pt;
+      color: #222;
+      text-indent: 0 !important;
+      text-align: center;
+    }
+
+    /* Assinaturas */
+    .sg {
+      margin-top: 28pt;
+      break-inside: avoid;
+      page-break-inside: avoid;
+      text-align: center;
+    }
+
+    .sg div {
+      margin: 26pt auto 0;
+      border-top: 1px solid #000;
+      padding-top: 3pt;
+      max-width: 12cm;
+    }
+
     #rep-last-spacer {
-      max-height: 480px !important;
+      max-height: 260px !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
@@ -934,309 +1221,9 @@
         left: auto !important;
         top: auto !important;
         visibility: visible !important;
-        font: 11pt/1.5 Arial, Helvetica, sans-serif !important;
-        color: #000 !important;
-        text-align: justify !important;
-        background: #fff !important;
         width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
-      }
-
-      /* Capa (Página 1) */
-      .cover {
-        width: 100% !important;
-        max-width: 21cm !important;
-        height: 29.7cm !important;
-        padding: 2.5cm 2.0cm !important;
-        box-sizing: border-box !important;
-        margin: 0 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        text-align: center !important;
-        break-after: page !important;
-        page-break-after: always !important;
-      }
-
-      /* Bloco isolado de Assinaturas (Sempre na última página e sem quebrar) */
-      .sec-sg-wrap {
-        break-before: page !important;
-        page-break-before: always !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-        padding-top: 10pt;
-      }
-
-      .cover img {
-        height: 2.5cm;
-        display: block;
-        margin: 0 auto 12pt;
-      }
-
-      .cover b {
-        display: block;
-        line-height: 1.35;
-      }
-
-      /* Layout de repetição de Cabeçalho e Rodapé a partir da Página 2 */
-      table.rep-layout {
-        width: 17cm !important;
-        margin: 0 auto !important;
-        border-collapse: collapse;
-        border: none !important;
-        padding: 0 !important;
-      }
-
-      table.rep-layout > thead {
-        display: table-header-group;
-      }
-
-      table.rep-layout > tfoot {
-        display: table-footer-group;
-      }
-
-      table.rep-layout > thead > tr > td {
-        border: none !important;
-        padding: 1.2cm 0 10pt 0 !important;
-        background: transparent !important;
-      }
-
-      table.rep-layout > tfoot > tr > td {
-        border: none !important;
-        padding: 10pt 0 1.2cm 0 !important;
-        background: transparent !important;
-      }
-
-      table.rep-layout > tbody > tr > td {
-        border: none !important;
-        padding: 0 !important;
-        background: transparent !important;
-      }
-
-      /* Cabeçalho Oficial SEMED */
-      .rep-header {
-        width: 100%;
-        padding-bottom: 2pt;
-      }
-
-      .rep-header-top {
-        display: flex;
-        align-items: center;
-        gap: 12pt;
-        margin-bottom: 6pt;
-      }
-
-      .rep-header-logo {
-        height: 48pt;
-        width: auto;
-        display: block;
-        object-fit: contain;
-      }
-
-      .rep-header-titles {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: left;
-        line-height: 1.25;
-      }
-
-      .rep-header-titles .h-line1 {
-        font-size: 8.5pt;
-        font-weight: 700;
-        color: #111;
-        letter-spacing: 0.3px;
-      }
-
-      .rep-header-titles .h-line2 {
-        font-size: 8.5pt;
-        font-weight: 700;
-        color: #111;
-        letter-spacing: 0.3px;
-      }
-
-      .rep-header-titles .h-line3 {
-        font-size: 11.5pt;
-        font-weight: 900;
-        color: #000;
-        letter-spacing: 0.3px;
-      }
-
-      .rep-header-titles .h-line4 {
-        font-size: 8.5pt;
-        font-weight: 700;
-        color: #111;
-        letter-spacing: 0.3px;
-      }
-
-      .rep-tricolor-bar {
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(to right, #438c7c 0%, #438c7c 33.33%, #f88c45 33.33%, #f88c45 66.66%, #eb3073 66.66%, #eb3073 100%) !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        display: block;
-      }
-
-      /* Rodapé Oficial SEMED */
-      .rep-footer {
-        width: 100%;
-        padding-top: 2pt;
-        text-align: center;
-      }
-
-      .rep-footer-text {
-        margin: 5pt 0 0 !important;
-        font-size: 7.5pt !important;
-        color: #333 !important;
-        line-height: 1.35 !important;
-        text-align: center !important;
-        text-indent: 0 !important;
-      }
-
-      
-      /* Sumário ABNT NBR 6027 */
-      .abnt-sumario {
-        page-break-after: always;
-        break-after: page;
-        padding: 6pt 0 16pt;
-      }
-
-      .sumario-title {
-        font: 700 12pt Arial !important;
-        text-align: center !important;
-        text-transform: uppercase !important;
-        margin: 6pt 0 22pt !important;
-        letter-spacing: 1px;
-      }
-
-      .sumario-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10pt;
-      }
-
-      .sumario-row {
-        display: flex;
-        align-items: baseline;
-        font-size: 10pt;
-        font-weight: 700;
-        color: #000;
-      }
-
-      .sumario-num-title {
-        white-space: nowrap;
-      }
-
-      .sumario-dots {
-        flex-grow: 1;
-        border-bottom: 1px dotted #333;
-        margin: 0 5pt;
-        height: 1em;
-      }
-
-      .sumario-page {
-        min-width: 16pt;
-        text-align: right;
-        font-weight: 700;
-      }
-
-      /* Tipografia do Relatório */
-      #rep h1 {
-        font: 700 12pt Arial;
-        text-transform: uppercase;
-        margin: 18pt 0 8pt;
-        break-after: avoid;
-        page-break-after: avoid;
-      }
-
-      #rep h2 {
-        font: 700 11pt Arial;
-        margin: 14pt 0 6pt;
-        break-after: avoid;
-        page-break-after: avoid;
-      }
-
-      #rep p {
-        margin: 0 0 6pt;
-        text-indent: 1.25cm;
-        text-align: justify;
-      }
-
-      #rep p.q {
-        text-indent: 0;
-        font-style: italic;
-        margin-top: 8pt;
-        break-after: avoid;
-        page-break-after: avoid;
-      }
-
-      #rep table:not(.rep-layout) {
-        min-width: 0;
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 9.5pt;
-        line-height: 1.25;
-        margin: 6pt 0;
-        break-inside: auto;
-      }
-
-      #rep table:not(.rep-layout) td,
-      #rep table:not(.rep-layout) th {
-        border: 1px solid #000;
-        padding: 3pt 5pt;
-        background: #fff;
-        color: #000;
-        text-align: left;
-      }
-
-      #rep table:not(.rep-layout) tr {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      /* Evidências registradas com tamanho delimitado */
-      #rep .ev-item {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        text-align: center;
-        margin: 10pt auto 14pt;
-      }
-
-      #rep .ev-item img {
-        max-width: 10.5cm !important;
-        max-height: 5.5cm !important;
-        width: auto !important;
-        height: auto !important;
-        object-fit: contain !important;
-        display: block !important;
-        margin: 0 auto 4pt !important;
-        border: 1px solid #d0d7de;
-        border-radius: 4px;
-      }
-
-      #rep .ev-cap {
-        font-size: 9.5pt;
-        color: #222;
-        text-indent: 0 !important;
-        text-align: center;
-      }
-
-      /* Assinaturas */
-      .sg {
-        margin-top: 28pt;
-        break-inside: avoid;
-        page-break-inside: avoid;
-        text-align: center;
-      }
-
-      .sg div {
-        margin: 26pt auto 0;
-        border-top: 1px solid #000;
-        padding-top: 3pt;
-        max-width: 12cm;
       }
     }
 
@@ -2151,7 +2138,7 @@
         try {
           // Altura útil de conteúdo por folha A4 no tbody:
           // Folha 29.7cm - margens (2.4cm) - cabeçalho (~2.6cm) - rodapé (~1.6cm) = 23.1cm ≈ 873px (a 96 DPI)
-          const pageH = 873;
+          const pageH = 845;
           const ident = document.getElementById('sec-ident');
           const lastTd = document.querySelector('table.rep-layout > tbody > tr > td');
           const spacer = document.getElementById('rep-last-spacer');
@@ -2175,7 +2162,7 @@
             // Espaçador seguro para ancorar o rodapé na base da folha exclusiva de assinaturas sem jamais criar página extra
             if (spacer && sgWrap) {
               const sgH = sgWrap.offsetHeight || 282;
-              const needed = Math.max(0, Math.min(480, 770 - sgH));
+              const needed = Math.max(0, Math.min(260, 600 - sgH));
               spacer.style.height = needed + 'px';
             }
           }
