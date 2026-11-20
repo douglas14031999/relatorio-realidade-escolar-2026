@@ -277,20 +277,13 @@ function emailLayoutBase(title, greetingHtml, cardsHtml, btnText, btnLink, discl
         </td>
       </tr>
 
-      <!-- Cabeçalho com Logo Institucional Embutida (CID) -->
-      <tr>
-        <td align="center" style="padding:28px 32px 18px 32px;background-color:#FFFFFF;">
-          <img src="https://relatorio.provacanoa.tech/logo-email.png" width="128" height="128" alt="Prefeitura de Lagoa da Canoa – Nossa gente, nosso orgulho" style="width:128px;height:auto;max-width:128px;display:block;margin:0 auto;border:0;">
-          <div style="margin-top:14px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#5B6B64;letter-spacing:0.3px;">
-            Secretaria Municipal de Educação
-          </div>
-        </td>
-      </tr>
-
       <!-- Título Principal -->
       <tr>
-        <td style="padding:16px 36px 0 36px;border-top:1px solid #E3ECE7;">
-          <h1 style="margin:12px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:23px;line-height:31px;font-weight:bold;color:#1F5A45;">
+        <td style="padding:28px 36px 0 36px;">
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#3A8266;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+            SEMED · Prefeitura de Lagoa da Canoa
+          </div>
+          <h1 style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:23px;line-height:31px;font-weight:bold;color:#1F5A45;">
             ${escapeHtml(title)}
           </h1>
         </td>
