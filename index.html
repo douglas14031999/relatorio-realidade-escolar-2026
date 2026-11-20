@@ -608,91 +608,6 @@
       min-height: 100vh
     }
 
-    .ah {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 16px clamp(16px, 4vw, 48px);
-      background: var(--card);
-      border-bottom: 1px solid var(--ln)
-    }
-
-    .ah img {
-      height: 44px;
-      display: block
-    }
-
-    .ah div {
-      display: flex;
-      gap: 8px
-    }
-
-    .am {
-      padding: 28px clamp(16px, 4vw, 48px);
-      max-width: 1200px;
-      margin: auto
-    }
-
-    .kp {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 14px;
-      margin: 20px 0
-    }
-
-    .kp div {
-      background: var(--card);
-      border: 1px solid var(--ln);
-      border-radius: 16px;
-      padding: 16px;
-      color: var(--mu)
-    }
-
-    .kp b {
-      display: block;
-      font: 700 32px 'Bricolage Grotesque', sans-serif;
-      color: var(--tx)
-    }
-
-    #at {
-      min-width: 780px
-    }
-
-    #at td,
-    #at th {
-      padding: 10px
-    }
-
-    .bd {
-      padding: 3px 11px;
-      border-radius: 99px;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap
-    }
-
-    .bd.ok {
-      background: #dcefe6;
-      color: #1f5a46
-    }
-
-    .bd.pa {
-      background: #ffeccf;
-      color: #8a4300
-    }
-
-    .bd.no {
-      background: #fde0ec;
-      color: #a30038
-    }
-
-    #aq {
-      max-width: 380px;
-      margin-bottom: 14px
-    }
-
     @media(max-width:860px) {
       #app {
         grid-template-columns: 1fr
@@ -1227,82 +1142,787 @@
       }
     }
 
-    .adm-panels {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 16px;
-      margin: 18px 0 22px;
+    /* ===== Painel administrativo ===== */
+    #adm {
+      --ok-bg: #dcefe6; --ok-fg: #1f5a46;
+      --pa-bg: #ffeccf; --pa-fg: #8a4300;
+      --ni-bg: #fde0ec; --ni-fg: #a30038;
+      --sv-bg: #e9eeeb; --sv-fg: #4d5d56; --sv-dot: #b4c2bb;
+      --hov: #f6faf8; --thbg: #eff6f2; --pri-fg: #fff;
+      --sh: 0 1px 2px rgba(29, 43, 38, .04), 0 12px 28px -18px rgba(29, 43, 38, .22)
     }
-    .adm-card {
+
+    @media(prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) #adm {
+        --ok-bg: #1f3d33; --ok-fg: #8fdcc2;
+        --pa-bg: #40290f; --pa-fg: #ffbd85;
+        --ni-bg: #431a2c; --ni-fg: #ff9fc3;
+        --sv-bg: #24332e; --sv-fg: #9bb0a7; --sv-dot: #4a5f57;
+        --hov: #1b2924; --thbg: #1c2d27; --pri-fg: #0d1a15; --sh: none
+      }
+    }
+
+    :root[data-theme="dark"] #adm {
+      --ok-bg: #1f3d33; --ok-fg: #8fdcc2;
+      --pa-bg: #40290f; --pa-fg: #ffbd85;
+      --ni-bg: #431a2c; --ni-fg: #ff9fc3;
+      --sv-bg: #24332e; --sv-fg: #9bb0a7; --sv-dot: #4a5f57;
+      --hov: #1b2924; --thbg: #1c2d27; --pri-fg: #0d1a15; --sh: none
+    }
+
+    .ah {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px clamp(16px, 4vw, 48px) 12px;
+      background: var(--card);
+      border-bottom: 1px solid var(--ln)
+    }
+
+    .ah::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--g), var(--o))
+    }
+
+    .ah img {
+      display: block;
+      height: 40px;
+      max-width: 60vw;
+      object-fit: contain
+    }
+
+    .ah-act {
+      display: flex;
+      gap: 8px
+    }
+
+    .hb {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border: 1px solid var(--ln);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--g2);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color .15s, border-color .15s
+    }
+
+    .hb:hover {
+      background: var(--gs);
+      border-color: var(--g)
+    }
+
+    .hb svg {
+      width: 16px;
+      height: 16px
+    }
+
+    .am {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px clamp(16px, 4vw, 48px) 72px
+    }
+
+    .am-head h1 {
+      font-size: clamp(26px, 3.4vw, 34px);
+      letter-spacing: -.01em
+    }
+
+    .am-head p {
+      margin: 6px 0 0;
+      color: var(--mu);
+      max-width: 64ch
+    }
+
+    .ov {
+      margin: 24px 0 32px;
+      padding: 22px;
       background: var(--card);
       border: 1px solid var(--ln);
       border-radius: 16px;
-      padding: 18px 20px;
+      box-shadow: var(--sh)
+    }
+
+    .ov-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 8px 16px;
+      flex-wrap: wrap;
+      margin-bottom: 14px
+    }
+
+    .ov-total {
+      display: flex;
+      align-items: baseline;
+      gap: 10px
+    }
+
+    .ov-total b {
+      font: 700 44px/1 'Bricolage Grotesque', sans-serif;
+      letter-spacing: -.02em
+    }
+
+    .ov-total span {
+      color: var(--mu);
+      font-size: 16px
+    }
+
+    .ov-sum {
+      margin: 0;
+      color: var(--mu);
+      font-size: 14px
+    }
+
+    .seg {
+      display: flex;
+      gap: 3px;
+      height: 14px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: var(--ln)
+    }
+
+    .seg i {
+      display: block;
+      min-width: 6px
+    }
+
+    .s-ok { background: var(--g) }
+    .s-pa { background: var(--o) }
+    .s-ni { background: var(--p) }
+    .s-sv { background: var(--sv-dot) }
+
+    .ov-tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 18px
+    }
+
+    .tile {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      gap: 8px;
+      text-align: left;
+      padding: 12px 14px;
+      border: 1.5px solid var(--ln);
+      border-radius: 12px;
+      background: var(--card);
+      cursor: pointer;
+      transition: background-color .15s, border-color .15s
     }
+
+    .tile:hover,
+    .tile.on {
+      background: var(--hov)
+    }
+
+    .tile .tl {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--mu);
+      font-size: 14px;
+      font-weight: 500
+    }
+
+    .tile b {
+      font: 700 28px/1 'Bricolage Grotesque', sans-serif
+    }
+
+    .tile .tdot {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--sv-dot)
+    }
+
+    .t-ok .tdot { background: var(--g) }
+    .t-pa .tdot { background: var(--o) }
+    .t-ni .tdot { background: var(--p) }
+    .t-ok.on { border-color: var(--g) }
+    .t-pa.on { border-color: var(--o) }
+    .t-ni.on { border-color: var(--p) }
+    .t-sv.on { border-color: var(--sv-dot) }
+
+    .cfg h2,
+    .lst h2 {
+      font-size: 19px;
+      margin: 0 0 12px
+    }
+
+    .adm-panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin: 0 0 36px
+    }
+
+    .adm-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--card);
+      border: 1px solid var(--ln);
+      border-radius: 16px
+    }
+
     .adm-card-head {
       display: flex;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-start;
+      gap: 12px
     }
+
     .adm-card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: var(--gs);
-      color: var(--g);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
+      display: grid;
+      place-items: center;
       flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--gs);
+      color: var(--g2)
     }
+
+    .adm-card-icon svg {
+      width: 20px;
+      height: 20px
+    }
+
     .adm-card-title {
       font: 700 16px 'Bricolage Grotesque', sans-serif;
-      color: var(--tx);
-      margin: 0;
+      margin: 0
     }
+
     .adm-card-desc {
-      font-size: 13px;
-      color: var(--mu);
       margin: 2px 0 0;
+      font-size: 13px;
       line-height: 1.4;
+      color: var(--mu)
     }
+
     .adm-card-form {
       display: flex;
-      gap: 8px;
-      align-items: center;
       flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto
     }
+
     .adm-card-form input {
-      flex: 1;
-      min-width: 170px;
-      padding: 10px 14px;
-      font-size: 14px;
+      flex: 1 1 100%;
+      min-width: 0;
+      padding: 10px 12px;
+      font-size: 14px
     }
+
     .adm-card-form .btn {
-      padding: 10px 18px;
+      padding: 10px 16px;
       font-size: 14px;
-      white-space: nowrap;
+      white-space: nowrap
     }
+
     .adm-card-status {
-      font-size: 12px;
-      color: var(--mu);
-      min-height: 16px;
       display: block;
+      min-height: 16px;
+      font-size: 12.5px;
+      color: var(--mu)
     }
+
+    .tb {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 20px;
+      flex-wrap: wrap;
+      margin-bottom: 12px
+    }
+
+    .search {
+      position: relative;
+      flex: 1 1 280px;
+      max-width: 440px
+    }
+
+    .search svg {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      width: 17px;
+      height: 17px;
+      transform: translateY(-50%);
+      color: var(--mu);
+      pointer-events: none
+    }
+
+    .search input[type=search] {
+      padding-left: 40px
+    }
+
+    .tb-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--mu);
+      font-size: 14px
+    }
+
+    .lnk {
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--g2);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer
+    }
+
+    .tcard {
+      background: var(--card);
+      border: 1px solid var(--ln);
+      border-radius: 16px;
+      box-shadow: var(--sh)
+    }
+
+    #at {
+      width: 100%;
+      min-width: 1040px;
+      border-collapse: separate;
+      border-spacing: 0
+    }
+
+    #at th {
+      padding: 12px 16px;
+      border: 0;
+      border-bottom: 1px solid var(--ln);
+      background: var(--thbg);
+      color: var(--g2);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    #at td {
+      padding: 14px 16px;
+      border: 0;
+      border-top: 1px solid var(--ln);
+      vertical-align: middle;
+      font-size: 14px
+    }
+
+    #at tbody tr:first-child td {
+      border-top: 0
+    }
+
+    #at tbody tr {
+      transition: background-color .12s
+    }
+
+    #at tbody tr:hover {
+      background: var(--hov)
+    }
+
+    .e-nm {
+      max-width: 30ch;
+      font-weight: 600;
+      line-height: 1.35
+    }
+
+    .c-resp {
+      min-width: 230px
+    }
+
+    .r-nm {
+      font-weight: 500
+    }
+
+    .r-meta span {
+      display: inline-block;
+      white-space: nowrap
+    }
+
+    .r-meta {
+      margin-top: 1px;
+      font-size: 12.5px;
+      color: var(--mu)
+    }
+
+    .r-mail,
+    .r-warn,
+    .pg-alert {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 4px;
+      font-size: 12.5px
+    }
+
+    .r-mail {
+      color: var(--g2);
+      overflow-wrap: anywhere
+    }
+
+    .r-warn {
+      font-weight: 600;
+      color: var(--pa-fg)
+    }
+
+    .r-mail svg,
+    .r-warn svg,
+    .pg-alert svg {
+      flex: none;
+      width: 13px;
+      height: 13px
+    }
+
+    .muted {
+      color: var(--mu)
+    }
+
+    .pg {
+      min-width: 120px;
+      height: 6px;
+      margin-bottom: 6px;
+      border-radius: 99px;
+      background: var(--ln);
+      overflow: hidden
+    }
+
+    .pg i {
+      display: block;
+      height: 100%;
+      border-radius: 99px
+    }
+
+    .pg.ok i { background: var(--g) }
+    .pg.pa i { background: linear-gradient(90deg, var(--g), var(--o)) }
+    .pg.ni i, .pg.sv i { background: var(--sv-dot) }
+
+    .pg-t {
+      font-size: 12.5px;
+      color: var(--mu);
+      font-variant-numeric: tabular-nums
+    }
+
+    .pg-t b {
+      color: var(--tx);
+      font-weight: 600
+    }
+
+    .pg-alert {
+      margin-top: 6px;
+      font-weight: 600;
+      color: var(--ni-fg)
+    }
+
+    .pg-rev {
+      margin-top: 2px;
+      font-size: 12.5px;
+      color: var(--mu)
+    }
+
+    .bd {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 11px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    .bd::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor
+    }
+
+    .bd.ok { background: var(--ok-bg); color: var(--ok-fg) }
+    .bd.pa { background: var(--pa-bg); color: var(--pa-fg) }
+    .bd.ni { background: var(--ni-bg); color: var(--ni-fg) }
+    .bd.sv { background: var(--sv-bg); color: var(--sv-fg) }
+
+    .c-upd {
+      white-space: nowrap;
+      font-size: 13px;
+      color: var(--mu);
+      font-variant-numeric: tabular-nums
+    }
+
+    .c-upd small {
+      display: block;
+      font-size: 12px
+    }
+
+    .c-act {
+      min-width: 220px
+    }
+
+    .acts {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px
+    }
+
+    .acts-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px
+    }
+
+    .acts-row.sec {
+      margin-left: -8px
+    }
+
+    .act {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border: 1px solid var(--ln);
+      border-radius: 9px;
+      background: var(--card);
+      color: var(--g2);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color .15s, border-color .15s, color .15s
+    }
+
+    .act:hover {
+      background: var(--gs);
+      border-color: var(--g)
+    }
+
+    .act.pri {
+      background: var(--g);
+      border-color: var(--g);
+      color: var(--pri-fg)
+    }
+
+    .act.pri:hover {
+      background: var(--g2);
+      border-color: var(--g2)
+    }
+
+    .act.ghost {
+      padding: 5px 8px;
+      border-color: transparent;
+      background: transparent;
+      color: var(--mu);
+      font-weight: 500
+    }
+
+    .act.ghost:hover {
+      background: var(--gs);
+      color: var(--g2)
+    }
+
+    .act.ghost.dng:hover {
+      background: var(--ni-bg);
+      color: var(--ni-fg)
+    }
+
+    .act:disabled {
+      opacity: .5;
+      cursor: not-allowed
+    }
+
+    .act svg {
+      width: 15px;
+      height: 15px
+    }
+
+    .act-note {
+      font-size: 13px;
+      color: var(--mu)
+    }
+
+    .empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 44px 16px;
+      text-align: center;
+      color: var(--mu)
+    }
+
+    .empty b {
+      font: 700 17px 'Bricolage Grotesque', sans-serif;
+      color: var(--tx)
+    }
+
+    .empty .act {
+      margin-top: 8px
+    }
+
+    #at tbody tr.empty-row:hover {
+      background: transparent
+    }
+
+    @media(max-width:860px) {
+      .ov { padding: 18px }
+      .tcard { border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible }
+      #at { display: block; min-width: 0 }
+      #at thead { display: none }
+      #at tbody { display: flex; flex-direction: column; gap: 12px }
+      #at tbody tr {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        padding: 16px;
+        background: var(--card);
+        border: 1px solid var(--ln);
+        border-radius: 14px
+      }
+      #at tbody tr:hover { background: var(--card) }
+      #at td { display: block; padding: 0; border: 0 }
+      #at tbody tr:first-child td { border: 0 }
+      #at td.c-esc { grid-column: 1; grid-row: 1 }
+      #at td.c-sit { grid-column: 2; grid-row: 1 }
+      #at td.c-resp, #at td.c-prog, #at td.c-upd, #at td.c-act, #at .empty-row td { grid-column: 1 / -1 }
+      .c-upd::before { content: "Última atualização: " }
+      .c-upd small { display: inline; margin-left: 6px }
+      .c-act { min-width: 0 }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      #adm * { transition: none !important }
+    }
+  
+/* ===== Redesign v2: login + relatório, na linguagem do painel administrativo ===== */
+#login,#app{--sh:0 1px 2px rgba(29,43,38,.04),0 12px 28px -18px rgba(29,43,38,.22)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) #login,:root:not([data-theme="light"]) #app{--sh:none}}
+:root[data-theme="dark"] #login,:root[data-theme="dark"] #app{--sh:none}
+/* Login */
+#login{grid-template-columns:minmax(0,1fr) minmax(0,1fr);place-items:stretch;padding:0;background:var(--bg)}
+.lg-side{position:relative;display:flex;align-items:flex-start;padding:clamp(32px,6vw,88px);background:#12372c;color:#fff;overflow:hidden;min-height:100vh}
+.lg-side::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#438c7c 33%,#f88c45 33% 66%,#eb3073 66%)}
+.lg-in{position:relative;z-index:1;max-width:30rem;padding-top:clamp(0px,8vh,80px)}
+.lg-side h2{font-size:clamp(30px,3.4vw,46px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
+.lg-side h2 span{display:block;margin-top:4px;font-size:clamp(76px,10vw,150px);line-height:.95;letter-spacing:-.05em;font-weight:800;color:#f88c45}
+.lg-side p{margin:22px 0 0;color:#b9d6cb;font-size:clamp(16px,1.3vw,18px);max-width:34ch}
+.lg-art{position:absolute;right:0;bottom:0;width:min(60%,400px);aspect-ratio:1;-webkit-mask:radial-gradient(circle at 100% 100%,#000 30%,transparent 72%);mask:radial-gradient(circle at 100% 100%,#000 30%,transparent 72%);background:radial-gradient(circle at 100% 100%,#f88c45 0 3px,transparent 3.5px),repeating-radial-gradient(circle at 100% 100%,transparent 0 41px,rgba(255,255,255,.14) 41px 42px)}
+.lg-main{display:grid;place-items:center;padding:clamp(24px,4vw,56px)}
+#login .box{width:100%;max-width:420px;border:0;border-radius:0;padding:0;background:transparent;box-shadow:none}
+#login .box .logo{justify-content:flex-start;margin:0 0 32px}
+#login .box .logo img{height:64px}
+#login .box h1{font-size:clamp(26px,2.6vw,32px);letter-spacing:-.015em;margin:0 0 6px}
+#login .box a{font-weight:600;text-underline-offset:3px}
+#login .btn.big{margin-top:24px;padding:14px 24px;font-size:16px}
+#login .escola{position:relative;padding:14px 16px 14px 48px;margin:8px 0;border-radius:12px;line-height:1.35}
+#login .escola::before{content:"";position:absolute;left:16px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;border:2px solid var(--ln);background:var(--card)}
+#login .escola.on::before{border-color:var(--g);background:radial-gradient(var(--g) 0 45%,var(--card) 50%)}
+#login .escola.on{box-shadow:0 0 0 3px var(--gs)}
+@media(max-width:860px){
+#login{grid-template-columns:1fr;grid-auto-rows:auto;align-content:start}
+.lg-side{min-height:0;padding:30px 22px 72px}
+.lg-in{padding-top:0}
+.lg-side h2{font-size:24px}
+.lg-side h2 span{font-size:64px;margin-top:2px}
+.lg-side p{margin-top:12px;font-size:15px}
+.lg-art{width:170px}
+.lg-main{place-items:start center;padding:0 14px 32px}
+#login .box{position:relative;z-index:2;margin-top:-44px;padding:22px 20px 24px;background:var(--card);border:1px solid var(--ln);border-radius:20px;box-shadow:var(--sh)}
+#login .box .logo{margin-bottom:20px}
+#login .box .logo img{height:52px}
+}
+/* Controles */
+#login input,#login select,#app input:not([type=checkbox]):not([type=radio]):not([type=file]),#app select,#app textarea{border-radius:10px;background:var(--card);transition:border-color .15s,box-shadow .15s}
+#login .btn,#app .btn{border-radius:10px;font-weight:600;transition:background-color .15s,border-color .15s,transform .1s}
+#app .btn:not(.sec):not(:disabled){box-shadow:0 1px 0 rgba(0,0,0,.08)}
+#app .btn:active:not(:disabled){transform:translateY(1px)}
+#app .btn.sec:hover:not(:disabled){background:var(--gs);border-color:var(--g)}
+/* Estrutura do relatório */
+#app{grid-template-columns:292px minmax(0,1fr);background:var(--bg)}
+#app aside{position:sticky;padding:0 14px 18px;display:flex;flex-direction:column;box-shadow:var(--sh)}
+#app aside::before{content:"";display:block;height:3px;margin:0 -14px;background:linear-gradient(90deg,var(--g),var(--o));flex:none}
+#app aside .logo{margin:20px auto 18px;padding-bottom:18px;border-bottom:1px solid var(--ln)}
+#app aside .logo img{height:50px}
+#app .nav{margin:0;display:grid;gap:2px;flex:1;align-content:start}
+#app .nav li{position:relative;padding:10px 12px;border-radius:10px;line-height:1.3;transition:background-color .15s,color .15s}
+#app .nav li:hover{background:var(--gs)}
+#app .nav li.cur{background:var(--gs);color:var(--g2);box-shadow:inset 3px 0 0 var(--g)}
+#app .dot{width:20px;height:20px;font-size:12px;font-weight:700}
+#app .done .dot{background:var(--ok)}
+#app .cur .dot{border-color:var(--g);box-shadow:0 0 0 3px var(--gs)}
+#app .cur.done .dot{box-shadow:none}
+#app .nav li.obs .dot,#app .nav li.done.obs .dot{background:var(--o);border-color:var(--o);color:#1b1006;font-weight:700}
+#app .nav li.obs.cur .dot{box-shadow:0 0 0 3px color-mix(in srgb,var(--o) 28%,transparent)}
+#app .aside-foot{margin-top:16px;display:grid;gap:8px}
+#app .btn-logout:hover{background:var(--gs);border-color:var(--g);color:var(--g2)}
+#app #btn_sair:hover{color:var(--p);border-color:var(--p)}
+#app main{max-width:920px;padding-top:24px}
+#app .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;font-size:14px}
+#app #where{color:var(--g2);font-weight:600}
+#app #pct{padding:4px 12px;border:1px solid var(--ln);border-radius:99px;background:var(--card);color:var(--mu);font-weight:600;font-size:13px;white-space:nowrap}
+#app .bar{height:10px;border-radius:99px;background:var(--ln)}
+#app .bar i{border-radius:99px}
+#app .card{margin-top:20px;border-radius:16px;box-shadow:var(--sh);padding:clamp(20px,4vw,40px)}
+#app .card h2{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.015em;margin:6px 0 8px}
+#app .card>.sec{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--g2);font-size:14px}
+#app .card>.sec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--o)}
+#app .hint{max-width:68ch;line-height:1.55;margin-bottom:22px}
+#app textarea{line-height:1.65;padding:14px 16px}
+#app .cnt{margin-top:6px}
+#app .nav2{margin-top:28px;padding-top:20px;border-top:1px solid var(--ln)}
+#app .saved{margin-top:12px;font-size:13.5px;color:var(--mu)}
+#app .grid{gap:0 20px}
+#app .chk label{border-radius:99px;transition:background-color .15s,border-color .15s}
+#app .chk label:hover{border-color:var(--g)}
+#app .tw{border:1px solid var(--ln);border-radius:12px;background:var(--card)}
+#app table{border-collapse:separate;border-spacing:0}
+#app th{background:var(--gs);color:var(--g2);font-weight:600;border:0;border-bottom:1px solid var(--ln);padding:10px 12px}
+#app td{border:0;border-bottom:1px solid var(--ln);padding:3px}
+#app tr:last-child td{border-bottom:0}
+#app td input,#app td select{border-radius:8px}
+#app td input:focus,#app td select:focus{background:var(--gs)}
+#app .pf{border-radius:14px;padding:18px;margin:14px 0;background:var(--card);border-left:4px solid var(--g)}
+#app .pf h3{font-size:18px;margin-bottom:4px}
+#app .fin{border-radius:12px;padding:14px 16px;background:var(--gs);border:1px solid var(--ln)}
+#app .ob{border-radius:12px;padding:14px 18px}
+#app .toast{border-radius:12px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+#app .btn-logout{border-radius:10px;font-weight:600}
+@media(max-width:860px){#app{grid-template-columns:1fr}#app aside{display:none}#app aside.open{display:flex!important}
+#app .mb{padding:10px 12px;margin:-16px -12px 16px;background:var(--card);border-bottom:1px solid var(--ln);position:sticky;top:0;z-index:30}
+#app .mb::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--g),var(--o))}}
+@media(max-width:560px){#app .card{padding:20px 16px}#app .card h2{font-size:22px}}
+@media(prefers-reduced-motion:reduce){#login *,#app *{transition:none!important}}
   </style>
 </head>
 
 <body>
   <div id="login">
-    <div class="box">
+    <div class="lg-side">
+      <div class="lg-in">
+        <h2>Relatório da Realidade Escolar <span>2026</span></h2>
+        <p>Avaliação institucional, diagnóstico e planejamento para 2027.</p>
+      </div>
+      <div class="lg-art" aria-hidden="true"></div>
+    </div>
+    <div class="lg-main"><div class="box">
       <span class="logo"><img id="login_logo" src="logo.svg" alt="Prefeitura de Lagoa da Canoa – Secretaria Municipal de Educação"></span>
-      <h1>Relatório da Realidade Escolar 2026</h1>
-      <p>Avaliação institucional, diagnóstico e planejamento para 2027.</p>
+      <h1>Acesse o seu relatório</h1>
       <div id="s1"><label for="cpf">Seu CPF</label><input id="cpf" type="text" inputmode="numeric" maxlength="14"
           placeholder="000.000.000-00" autocomplete="off">
         <div class="err" id="e1"></div><button class="btn big" id="b1">Continuar</button>
@@ -1336,7 +1956,7 @@
         <div class="err" id="e4"></div><button class="btn big" id="b4">Vincular e abrir relatório</button>
         <p style="text-align:center;margin:18px 0 0"><a href="#" id="l4v">Voltar</a></p>
       </div>
-    </div>
+    </div></div>
   </div>
 
   <div id="app">
@@ -1346,6 +1966,10 @@
       <span class="logo"><img id="aside_logo" src="logo.svg" alt="Prefeitura de Lagoa da Canoa – SEMED"></span>
       <ul class="nav" id="nav"></ul>
       <div class="aside-foot">
+        <button type="button" class="btn-logout" id="btn_troca" title="Voltar para a lista de escolas">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+          Trocar de escola
+        </button>
         <button type="button" class="btn-logout" id="btn_sair" title="Sair do relatório">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -1365,67 +1989,80 @@
   </div>
   <div id="adm">
     <header class="ah"><img id="alg" src="logo.svg" alt="Prefeitura de Lagoa da Canoa – SEMED">
-      <div><button class="btn sec" id="ar">Atualizar</button><button class="btn sec" id="as">Sair</button></div>
+      <div class="ah-act">
+        <button type="button" class="hb" id="ar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>Atualizar</button>
+        <button type="button" class="hb" id="as"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Sair</button>
+      </div>
     </header>
-    <div class="am">
-      <h1>Painel administrativo</h1>
-      <div class="kp" id="kp"></div>
-      <div class="adm-panels">
-        <!-- Card 1: Prazo de Edição -->
-        <div class="adm-card">
-          <div class="adm-card-head">
-            <div class="adm-card-icon">📅</div>
-            <div>
-              <h3 class="adm-card-title">Prazo de edição</h3>
-              <p class="adm-card-desc">Define a data limite para envio e edições pelas escolas</p>
-            </div>
-          </div>
-          <div class="adm-card-form">
-            <input type="date" id="ap" aria-label="Prazo de edição">
-            <button class="btn" id="apb">Definir prazo</button>
-            <button class="btn sec" id="apx">Remover</button>
-          </div>
-          <small id="apm" class="adm-card-status"></small>
-        </div>
-
-        <!-- Card 2: E-mail da SEMED -->
-        <div class="adm-card">
-          <div class="adm-card-head">
-            <div class="adm-card-icon">✉</div>
-            <div>
-              <h3 class="adm-card-title">E-mail da SEMED para avisos</h3>
-              <p class="adm-card-desc">Recebe notificações de relatórios finalizados e correções</p>
-            </div>
-          </div>
-          <div class="adm-card-form">
-            <input type="email" id="aem" placeholder="semed@lagoadacanoa.al.gov.br" aria-label="E-mail da SEMED">
-            <button class="btn" id="aemb">Salvar e-mail</button>
-          </div>
-          <small id="aemm" class="adm-card-status"></small>
-        </div>
-
-        <!-- Card 3: Nova Escola -->
-        <div class="adm-card">
-          <div class="adm-card-head">
-            <div class="adm-card-icon">🏫</div>
-            <div>
-              <h3 class="adm-card-title">Cadastrar unidade escolar</h3>
-              <p class="adm-card-desc">Adiciona uma nova escola à rede de Lagoa da Canoa</p>
-            </div>
-          </div>
-          <div class="adm-card-form">
-            <input type="text" id="an" placeholder="Nome da nova escola" aria-label="Nome da nova escola">
-            <button class="btn" id="ab">Cadastrar</button>
-          </div>
-          <small class="adm-card-status"></small>
-        </div>
+    <main class="am">
+      <div class="am-head">
+        <h1>Painel administrativo</h1>
+        <p>Acompanhe o preenchimento do Relatório da Realidade Escolar 2026 em cada escola da rede.</p>
       </div>
+      <div class="ov" id="kp"></div>
 
-      <input type="search" id="aq" placeholder="🔍 Buscar por escola, responsável ou e-mail..." aria-label="Buscar escola ou responsável" style="margin-bottom:16px">
-      <div class="tw">
-        <table id="at"></table>
-      </div>
-    </div>
+      <section class="cfg" aria-labelledby="cfgt">
+        <h2 id="cfgt">Configurações</h2>
+        <div class="adm-panels">
+          <div class="adm-card">
+            <div class="adm-card-head">
+              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div>
+              <div>
+                <h3 class="adm-card-title">Prazo de edição</h3>
+                <p class="adm-card-desc">Define a data limite para envio e edições pelas escolas</p>
+              </div>
+            </div>
+            <div class="adm-card-form">
+              <input type="date" id="ap" aria-label="Prazo de edição">
+              <button class="btn" id="apb">Definir prazo</button>
+              <button class="btn sec" id="apx">Remover</button>
+            </div>
+            <small id="apm" class="adm-card-status"></small>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card-head">
+              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+              <div>
+                <h3 class="adm-card-title">E-mail da SEMED para avisos</h3>
+                <p class="adm-card-desc">Recebe notificações de relatórios finalizados e correções</p>
+              </div>
+            </div>
+            <div class="adm-card-form">
+              <input type="email" id="aem" placeholder="semed@lagoadacanoa.al.gov.br" aria-label="E-mail da SEMED">
+              <button class="btn" id="aemb">Salvar e-mail</button>
+            </div>
+            <small id="aemm" class="adm-card-status"></small>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card-head">
+              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M10 21v-5h4v5"/></svg></div>
+              <div>
+                <h3 class="adm-card-title">Cadastrar unidade escolar</h3>
+                <p class="adm-card-desc">Adiciona uma nova escola à rede de Lagoa da Canoa</p>
+              </div>
+            </div>
+            <div class="adm-card-form">
+              <input type="text" id="an" placeholder="Nome da nova escola" aria-label="Nome da nova escola">
+              <button class="btn" id="ab">Cadastrar</button>
+            </div>
+            <small class="adm-card-status" id="anm"></small>
+          </div>
+        </div>
+      </section>
+
+      <section class="lst" aria-labelledby="lstt">
+        <h2 id="lstt">Escolas da rede</h2>
+        <div class="tb">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="aq" placeholder="Buscar por escola, responsável ou e-mail" aria-label="Buscar escola ou responsável"></div>
+          <div class="tb-info" id="acount" aria-live="polite"></div>
+        </div>
+        <div class="tw tcard">
+          <table id="at"></table>
+        </div>
+      </section>
+    </main>
   </div>
   <div class="toast" id="toast" role="alert"></div>
   <div id="rep"></div>
@@ -1538,6 +2175,21 @@
       $('#cpf').value = '';
       $('#e1').textContent = '';
       toast('Você saiu do sistema.');
+    }
+    async function trocaEscola() {
+      if (ADMV || !U) return;
+      const s = S[i];
+      if (!confirm(isStepDirty(s) ? 'Você tem alterações não salvas nesta etapa.\n\nDeseja trocar de escola mesmo assim? As alterações não salvas serão perdidas.' : 'Voltar para a lista de escolas?')) return;
+      await flush();
+      clearSession();
+      toggleMenu(false);
+      ESC = ''; D = {}; done = {}; OBS = {}; savedSnapshot = {};
+      $('#hi').textContent = 'Olá, ' + U.nome + '.';
+      $('#esc').innerHTML = U.escolas.map((e, n) => `<button class="escola" data-n="${n}">${esc(e)}</button>`).join('');
+      $('#b2').disabled = true; $('#e2').textContent = '';
+      $('#s1').style.display = 'none'; $('#s3').style.display = 'none'; $('#s4').style.display = 'none'; $('#s2').style.display = 'block';
+      $('#app').style.display = 'none'; $('#login').style.display = 'grid';
+      window.scrollTo(0, 0);
     }
     function isStepDirty(s) {
       if (!s || s.type === 'fim') return false;
@@ -1727,6 +2379,7 @@
     function draw() {
       const s = S[i];
       updateSidebarProgress();
+      { const tb = $('#btn_troca'); if (tb) tb.style.display = ADMV ? 'none' : ''; }
       let h = `<div class="sec">${esc(s.sec)}${s.sub ? ' · ' + esc(s.sub) : ''}</div><h2>${esc(s.t)}</h2>`; if (s.h) h += `<p class="hint">${esc(s.h)}</p>`;
       const o = OBS[s.id], adm = ADMV, ro = adm || (ENC && !(o && o.status === 'pendente'));
       h += banners(s) + R[s.type || 'txt'](s);
@@ -2337,16 +2990,51 @@
     });
     $('#ar').onclick = () => carrega().catch(() => toast('Não foi possível atualizar o painel.'));
     $('#as').onclick = () => { clearSession(); location.reload(); };
-    $('#btn_sair').onclick = logout; $('#aq').oninput = () => adr();
+    $('#btn_sair').onclick = logout; $('#btn_troca').onclick = trocaEscola; $('#aq').oninput = () => adr();
+    let FST = '';
+    const IC = { mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>', alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>', unlink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7"/><path d="M15 7h2a5 5 0 0 1 4 8"/><path d="M8 12h4"/><path d="m2 2 20 20"/></svg>', trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m6 6 1 14h10l1-14"/></svg>' };
     const stt = r => !r.responsavel ? ['Sem vínculo', 'no', 'sv'] : (r.fim && r.feitas >= r.total && !r.pend ? ['Finalizado', 'ok', 'ok'] : (r.feitas || r.iniciada ? ['Parcial', 'pa', 'pa'] : ['Não iniciado', 'no', 'ni']));
+    const nomeEsc = s => String(s || '').toLowerCase().split(/(\s+)/).map(w => {
+      if (!w.trim() || ['de', 'da', 'do', 'das', 'dos', 'e'].includes(w)) return w;
+      if (/^[ivx]+$/.test(w) || (!/[aeiouáéíóúâêôãõ]/.test(w) && !w.endsWith('.'))) return w.toUpperCase();
+      return w.charAt(0).toUpperCase() + w.slice(1)
+    }).join('');
+    const TILES = [['ok', 'Finalizadas'], ['pa', 'Parciais'], ['ni', 'Não iniciadas'], ['sv', 'Sem vínculo']];
     function adr() {
-      const q = $('#aq').value.toLowerCase(), k = { ok: 0, pa: 0, ni: 0, sv: 0 }; AD.forEach(r => k[stt(r)[2]]++);
-      $('#kp').innerHTML = `<div><b>${AD.length}</b>Escolas</div><div><b>${k.ok}</b>Finalizadas</div><div><b>${k.pa}</b>Parciais</div><div><b>${k.ni}</b>Não iniciadas</div><div><b>${k.sv}</b>Sem vínculo</div>`;
-      $('#at').innerHTML = '<tr><th>Escola</th><th>Responsável</th><th>Progresso</th><th>Situação</th><th>Última atualização</th><th>Ações</th></tr>' + AD.filter(r => (r.escola + ' ' + (r.responsavel || '') + ' ' + (r.email || '')).toLowerCase().includes(q)).map(r => {
-        const [l, c] = stt(r);
-        return `<tr><td>${esc(r.escola)}</td><td>${r.responsavel ? `${esc(r.responsavel)}<br><small style="color:var(--mu)">${esc(r.funcao || '')} · CPF ${esc(r.cpf || '')}</small>${r.email ? `<div style="font-size:12px;color:var(--g);margin-top:3px;display:flex;align-items:center;gap:4px">✉ <span style="font-weight:500">${esc(r.email)}</span></div>` : '<div style="font-size:11px;color:var(--o);margin-top:3px;font-weight:600">⚠ Sem e-mail cadastrado</div>'}` : '<span style="color:var(--mu)">Aguardando vínculo</span>'}</td><td><div class="bar" style="height:6px"><i style="width:${Math.round(r.feitas / r.total * 100)}%"></i></div>${r.feitas} de ${r.total} etapas${r.pend ? `<br><small style="color:var(--p)">${r.pend} observação(ões) em aberto${r.rev ? ' · ' + r.rev + ' aguardando aprovação' : ''}</small>` : ''}</td><td><span class="bd ${c}">${l}</span></td><td>${esc(r.atualizado || '–')}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sec" data-o="${esc(r.escola)}" ${r.feitas || r.iniciada ? '' : 'disabled'}>Ver e observar</button><button class="btn sec" data-g="${esc(r.escola)}" ${r.feitas || r.iniciada ? '' : 'disabled'}>Gerar relatório</button>${r.responsavel ? `<button class="btn sec" data-em="${esc(r.escola)}" title="Atualizar e-mail da escola">✉ E-mail</button>` : ''}${r.responsavel ? `<button class="btn sec" data-l="${esc(r.escola)}">Liberar vínculo</button>` : ''}${!r.responsavel && !r.iniciada ? `<button class="btn sec" data-x="${esc(r.escola)}">Excluir</button>` : ''}</div></td></tr>`
-      }).join('')
+      const q = $('#aq').value.toLowerCase().trim(), k = { ok: 0, pa: 0, ni: 0, sv: 0 }; AD.forEach(r => k[stt(r)[2]]++);
+      const n = AD.length;
+      $('#kp').innerHTML = `<div class="ov-top"><div class="ov-total"><b>${n}</b><span>${n === 1 ? 'escola na rede' : 'escolas na rede'}</span></div><p class="ov-sum">${k.ok} de ${n} relatórios finalizados</p></div>`
+        + `<div class="seg" role="img" aria-label="${TILES.map(([c, l]) => k[c] + ' ' + l.toLowerCase()).join(', ')}">${TILES.map(([c, l]) => k[c] ? `<i class="s-${c}" style="flex:${k[c]}" title="${k[c]} ${l.toLowerCase()}"></i>` : '').join('')}</div>`
+        + `<div class="ov-tiles">${TILES.map(([c, l]) => `<button type="button" class="tile t-${c}${FST === c ? ' on' : ''}" data-f="${c}" aria-pressed="${FST === c}"><span class="tl"><i class="tdot"></i>${l}</span><b>${k[c]}</b></button>`).join('')}</div>`;
+      const anm = $('#anm'); if (anm) anm.textContent = n + (n === 1 ? ' unidade cadastrada na rede.' : ' unidades cadastradas na rede.');
+      const rows = AD.filter(r => (!FST || stt(r)[2] === FST) && (r.escola + ' ' + (r.responsavel || '') + ' ' + (r.email || '')).toLowerCase().includes(q));
+      $('#acount').innerHTML = `<span>Mostrando ${rows.length} de ${n} escolas</span>` + (FST || q ? '<button type="button" class="lnk" data-clr>Limpar filtros</button>' : '');
+      const head = '<thead><tr><th>Escola</th><th>Responsável</th><th>Progresso</th><th>Situação</th><th>Última atualização</th><th>Ações</th></tr></thead>';
+      const body = rows.length ? rows.map(r => {
+        const [l, , c] = stt(r), has = r.feitas || r.iniciada, nm = esc(r.escola), pct = r.total ? Math.round(r.feitas / r.total * 100) : 0;
+        const meta = [r.funcao, r.cpf ? 'CPF ' + r.cpf : ''].filter(Boolean).map(x => `<span>${esc(x)}</span>`).join(' · ');
+        const resp = r.responsavel
+          ? `<div class="r-nm">${esc(r.responsavel)}</div>${meta ? `<div class="r-meta">${meta}</div>` : ''}${r.email ? `<div class="r-mail">${IC.mail}<span>${esc(r.email)}</span></div>` : `<div class="r-warn">${IC.alert}Sem e-mail cadastrado</div>`}`
+          : '<span class="muted">Aguardando vínculo</span>';
+        const prog = `<div class="pg ${c}"><i style="width:${pct}%"></i></div><div class="pg-t"><b>${r.feitas}</b> de ${r.total} etapas</div>`
+          + (r.pend ? `<div class="pg-alert">${IC.alert}${r.pend} ${r.pend > 1 ? 'observações em aberto' : 'observação em aberto'}</div>` : '')
+          + (r.rev ? `<div class="pg-rev">${r.rev} aguardando aprovação</div>` : '');
+        const [d, ...t] = String(r.atualizado || '').split(' ');
+        const upd = r.atualizado ? `${esc(d)}<small>${esc(t.join(' '))}</small>` : '–';
+        const main = has
+          ? `<button type="button" class="act pri" data-o="${nm}">Ver e observar</button><button type="button" class="act" data-g="${nm}">Gerar relatório</button>`
+          : `<span class="act-note">${r.responsavel ? 'Aguardando preenchimento' : 'Sem relatório ainda'}</span>`;
+        const sec = (r.responsavel ? `<button type="button" class="act ghost" data-em="${nm}" title="Atualizar e-mail da escola">${IC.mail}E-mail</button><button type="button" class="act ghost" data-l="${nm}">${IC.unlink}Liberar vínculo</button>` : '')
+          + (!r.responsavel && !r.iniciada ? `<button type="button" class="act ghost dng" data-x="${nm}">${IC.trash}Excluir</button>` : '');
+        return `<tr><td class="c-esc"><div class="e-nm">${esc(nomeEsc(r.escola))}</div></td><td class="c-resp">${resp}</td><td class="c-prog">${prog}</td><td class="c-sit"><span class="bd ${c}">${l}</span></td><td class="c-upd">${upd}</td><td class="c-act"><div class="acts"><div class="acts-row">${main}</div>${sec ? `<div class="acts-row sec">${sec}</div>` : ''}</div></td></tr>`
+      }).join('') : `<tr class="empty-row"><td colspan="6"><div class="empty">${n ? '<b>Nenhuma escola encontrada</b><span>Revise a busca ou limpe os filtros para ver todas as escolas.</span><button type="button" class="act" data-clr>Limpar filtros</button>' : '<b>Nenhuma escola cadastrada</b><span>Use o cartão “Cadastrar unidade escolar” para adicionar a primeira.</span>'}</div></td></tr>`;
+      $('#at').innerHTML = head + '<tbody>' + body + '</tbody>'
     }
+    $('#adm').addEventListener('click', e => {
+      const t = e.target.closest('.tile');
+      if (t) { FST = FST === t.dataset.f ? '' : t.dataset.f; adr(); return }
+      if (e.target.closest('[data-clr]')) { FST = ''; $('#aq').value = ''; adr(); $('#aq').focus() }
+    });
     async function acao(b, o, ok) { b.disabled = true; try { const r = await api(Object.assign({ senha: ADM }, o)); if (!r.ok) throw r.erro || 0; await carrega(); if (ok) ok() } catch (x) { toast(typeof x === 'string' ? x : 'Não foi possível concluir a ação.'); b.disabled = false } }
     $('#ab').onclick = () => { const n = $('#an').value.trim(); if (!n) return; acao($('#ab'), { action: 'admin_add', escola: n }, () => { $('#an').value = ''; $('#ab').disabled = false }) };
     $('#an').onkeydown = e => { if (e.key === 'Enter') $('#ab').click() };

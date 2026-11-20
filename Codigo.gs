@@ -322,7 +322,12 @@ function emailLayoutBase(title, greetingHtml, cardsHtml, btnText, btnLink, discl
           <a href="${cleanLink}" target="_blank" style="color:#1F5A45;word-break:break-all;">${cleanLink}</a>
         </td>
       </tr>
-      ` : ''}
+      ` : `
+      <!-- Margem inferior entre os cards e o rodapé quando não há botão -->
+      <tr>
+        <td height="28" style="height:28px;font-size:0;line-height:0;padding:0;mso-line-height-rule:exactly;">&nbsp;</td>
+      </tr>
+      `}
 
       <!-- Rodapé Institucional Verde -->
       <tr>
