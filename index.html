@@ -879,27 +879,27 @@
       padding: 0 !important;
     }
 
-    table.rep-layout > thead {
+    table.rep-layout>thead {
       display: table-header-group;
     }
 
-    table.rep-layout > tfoot {
+    table.rep-layout>tfoot {
       display: table-footer-group;
     }
 
-    table.rep-layout > thead > tr > td {
+    table.rep-layout>thead>tr>td {
       border: none !important;
       padding: 1.2cm 0 10pt 0 !important;
       background: transparent !important;
     }
 
-    table.rep-layout > tfoot > tr > td {
+    table.rep-layout>tfoot>tr>td {
       border: none !important;
       padding: 10pt 0 1.2cm 0 !important;
       background: transparent !important;
     }
 
-    table.rep-layout > tbody > tr > td {
+    table.rep-layout>tbody>tr>td {
       border: none !important;
       padding: 0 !important;
       background: transparent !important;
@@ -1175,30 +1175,53 @@
 
     /* ===== Painel administrativo ===== */
     #adm {
-      --ok-bg: #dcefe6; --ok-fg: #1f5a46;
-      --pa-bg: #ffeccf; --pa-fg: #8a4300;
-      --ni-bg: #fde0ec; --ni-fg: #a30038;
-      --sv-bg: #e9eeeb; --sv-fg: #4d5d56; --sv-dot: #b4c2bb;
-      --hov: #f6faf8; --thbg: #eff6f2; --pri-fg: #fff;
+      --ok-bg: #dcefe6;
+      --ok-fg: #1f5a46;
+      --pa-bg: #ffeccf;
+      --pa-fg: #8a4300;
+      --ni-bg: #fde0ec;
+      --ni-fg: #a30038;
+      --sv-bg: #e9eeeb;
+      --sv-fg: #4d5d56;
+      --sv-dot: #b4c2bb;
+      --hov: #f6faf8;
+      --thbg: #eff6f2;
+      --pri-fg: #fff;
       --sh: 0 1px 2px rgba(29, 43, 38, .04), 0 12px 28px -18px rgba(29, 43, 38, .22)
     }
 
     @media(prefers-color-scheme:dark) {
       :root:not([data-theme="light"]) #adm {
-        --ok-bg: #1f3d33; --ok-fg: #8fdcc2;
-        --pa-bg: #40290f; --pa-fg: #ffbd85;
-        --ni-bg: #431a2c; --ni-fg: #ff9fc3;
-        --sv-bg: #24332e; --sv-fg: #9bb0a7; --sv-dot: #4a5f57;
-        --hov: #1b2924; --thbg: #1c2d27; --pri-fg: #0d1a15; --sh: none
+        --ok-bg: #1f3d33;
+        --ok-fg: #8fdcc2;
+        --pa-bg: #40290f;
+        --pa-fg: #ffbd85;
+        --ni-bg: #431a2c;
+        --ni-fg: #ff9fc3;
+        --sv-bg: #24332e;
+        --sv-fg: #9bb0a7;
+        --sv-dot: #4a5f57;
+        --hov: #1b2924;
+        --thbg: #1c2d27;
+        --pri-fg: #0d1a15;
+        --sh: none
       }
     }
 
     :root[data-theme="dark"] #adm {
-      --ok-bg: #1f3d33; --ok-fg: #8fdcc2;
-      --pa-bg: #40290f; --pa-fg: #ffbd85;
-      --ni-bg: #431a2c; --ni-fg: #ff9fc3;
-      --sv-bg: #24332e; --sv-fg: #9bb0a7; --sv-dot: #4a5f57;
-      --hov: #1b2924; --thbg: #1c2d27; --pri-fg: #0d1a15; --sh: none
+      --ok-bg: #1f3d33;
+      --ok-fg: #8fdcc2;
+      --pa-bg: #40290f;
+      --pa-fg: #ffbd85;
+      --ni-bg: #431a2c;
+      --ni-fg: #ff9fc3;
+      --sv-bg: #24332e;
+      --sv-fg: #9bb0a7;
+      --sv-dot: #4a5f57;
+      --hov: #1b2924;
+      --thbg: #1c2d27;
+      --pri-fg: #0d1a15;
+      --sh: none
     }
 
     .ah {
@@ -1265,8 +1288,13 @@
     }
 
     @keyframes hb-spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .am {
@@ -1340,10 +1368,21 @@
       min-width: 6px
     }
 
-    .s-ok { background: var(--g) }
-    .s-pa { background: var(--o) }
-    .s-ni { background: var(--p) }
-    .s-sv { background: var(--sv-dot) }
+    .s-ok {
+      background: var(--g)
+    }
+
+    .s-pa {
+      background: var(--o)
+    }
+
+    .s-ni {
+      background: var(--p)
+    }
+
+    .s-sv {
+      background: var(--sv-dot)
+    }
 
     .ov-tiles {
       display: grid;
@@ -1391,13 +1430,33 @@
       background: var(--sv-dot)
     }
 
-    .t-ok .tdot { background: var(--g) }
-    .t-pa .tdot { background: var(--o) }
-    .t-ni .tdot { background: var(--p) }
-    .t-ok.on { border-color: var(--g) }
-    .t-pa.on { border-color: var(--o) }
-    .t-ni.on { border-color: var(--p) }
-    .t-sv.on { border-color: var(--sv-dot) }
+    .t-ok .tdot {
+      background: var(--g)
+    }
+
+    .t-pa .tdot {
+      background: var(--o)
+    }
+
+    .t-ni .tdot {
+      background: var(--p)
+    }
+
+    .t-ok.on {
+      border-color: var(--g)
+    }
+
+    .t-pa.on {
+      border-color: var(--o)
+    }
+
+    .t-ni.on {
+      border-color: var(--p)
+    }
+
+    .t-sv.on {
+      border-color: var(--sv-dot)
+    }
 
     .cfg h2,
     .lst h2 {
@@ -1649,9 +1708,18 @@
       border-radius: 99px
     }
 
-    .pg.ok i { background: var(--g) }
-    .pg.pa i { background: linear-gradient(90deg, var(--g), var(--o)) }
-    .pg.ni i, .pg.sv i { background: var(--sv-dot) }
+    .pg.ok i {
+      background: var(--g)
+    }
+
+    .pg.pa i {
+      background: linear-gradient(90deg, var(--g), var(--o))
+    }
+
+    .pg.ni i,
+    .pg.sv i {
+      background: var(--sv-dot)
+    }
 
     .pg-t {
       font-size: 12.5px;
@@ -1695,10 +1763,25 @@
       background: currentColor
     }
 
-    .bd.ok { background: var(--ok-bg); color: var(--ok-fg) }
-    .bd.pa { background: var(--pa-bg); color: var(--pa-fg) }
-    .bd.ni { background: var(--ni-bg); color: var(--ni-fg) }
-    .bd.sv { background: var(--sv-bg); color: var(--sv-fg) }
+    .bd.ok {
+      background: var(--ok-bg);
+      color: var(--ok-fg)
+    }
+
+    .bd.pa {
+      background: var(--pa-bg);
+      color: var(--pa-fg)
+    }
+
+    .bd.ni {
+      background: var(--ni-bg);
+      color: var(--ni-fg)
+    }
+
+    .bd.sv {
+      background: var(--sv-bg);
+      color: var(--sv-fg)
+    }
 
     .c-upd {
       white-space: nowrap;
@@ -1822,11 +1905,33 @@
     }
 
     @media(max-width:860px) {
-      .ov { padding: 18px }
-      .tcard { border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible }
-      #at { display: block; min-width: 0 }
-      #at thead { display: none }
-      #at tbody { display: flex; flex-direction: column; gap: 12px }
+      .ov {
+        padding: 18px
+      }
+
+      .tcard {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible
+      }
+
+      #at {
+        display: block;
+        min-width: 0
+      }
+
+      #at thead {
+        display: none
+      }
+
+      #at tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 12px
+      }
+
       #at tbody tr {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -1836,119 +1941,651 @@
         border: 1px solid var(--ln);
         border-radius: 14px
       }
-      #at tbody tr:hover { background: var(--card) }
-      #at td { display: block; padding: 0; border: 0 }
-      #at tbody tr:first-child td { border: 0 }
-      #at td.c-esc { grid-column: 1; grid-row: 1 }
-      #at td.c-sit { grid-column: 2; grid-row: 1 }
-      #at td.c-resp, #at td.c-prog, #at td.c-upd, #at td.c-act, #at .empty-row td { grid-column: 1 / -1 }
-      .c-upd::before { content: "Última atualização: " }
-      .c-upd small { display: inline; margin-left: 6px }
-      .c-act { min-width: 0 }
+
+      #at tbody tr:hover {
+        background: var(--card)
+      }
+
+      #at td {
+        display: block;
+        padding: 0;
+        border: 0
+      }
+
+      #at tbody tr:first-child td {
+        border: 0
+      }
+
+      #at td.c-esc {
+        grid-column: 1;
+        grid-row: 1
+      }
+
+      #at td.c-sit {
+        grid-column: 2;
+        grid-row: 1
+      }
+
+      #at td.c-resp,
+      #at td.c-prog,
+      #at td.c-upd,
+      #at td.c-act,
+      #at .empty-row td {
+        grid-column: 1 / -1
+      }
+
+      .c-upd::before {
+        content: "Última atualização: "
+      }
+
+      .c-upd small {
+        display: inline;
+        margin-left: 6px
+      }
+
+      .c-act {
+        min-width: 0
+      }
     }
 
     @media(prefers-reduced-motion:reduce) {
-      #adm * { transition: none !important }
+      #adm * {
+        transition: none !important
+      }
     }
-  
-/* ===== Redesign v2: login + relatório, na linguagem do painel administrativo ===== */
-#login,#app{--sh:0 1px 2px rgba(29,43,38,.04),0 12px 28px -18px rgba(29,43,38,.22)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) #login,:root:not([data-theme="light"]) #app{--sh:none}}
-:root[data-theme="dark"] #login,:root[data-theme="dark"] #app{--sh:none}
-/* Login */
-#login{grid-template-columns:minmax(0,1fr) minmax(0,1fr);place-items:stretch;padding:0;background:var(--bg)}
-.lg-side{position:relative;display:flex;align-items:flex-start;padding:clamp(32px,6vw,88px);background:#12372c;color:#fff;overflow:hidden;min-height:100vh}
-.lg-side::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,#438c7c 33%,#f88c45 33% 66%,#eb3073 66%)}
-.lg-in{position:relative;z-index:1;max-width:30rem;padding-top:clamp(0px,8vh,80px)}
-.lg-side h2{font-size:clamp(30px,3.4vw,46px);line-height:1.08;letter-spacing:-.02em;font-weight:700}
-.lg-side h2 span{display:block;margin-top:4px;font-size:clamp(76px,10vw,150px);line-height:.95;letter-spacing:-.05em;font-weight:800;color:#f88c45}
-.lg-side p{margin:22px 0 0;color:#b9d6cb;font-size:clamp(16px,1.3vw,18px);max-width:34ch}
-.lg-art{position:absolute;right:0;bottom:0;width:min(60%,400px);aspect-ratio:1;-webkit-mask:radial-gradient(circle at 100% 100%,#000 30%,transparent 72%);mask:radial-gradient(circle at 100% 100%,#000 30%,transparent 72%);background:radial-gradient(circle at 100% 100%,#f88c45 0 3px,transparent 3.5px),repeating-radial-gradient(circle at 100% 100%,transparent 0 41px,rgba(255,255,255,.14) 41px 42px)}
-.lg-main{display:grid;place-items:center;padding:clamp(24px,4vw,56px)}
-#login .box{width:100%;max-width:420px;border:0;border-radius:0;padding:0;background:transparent;box-shadow:none}
-#login .box .logo{justify-content:flex-start;margin:0 0 32px}
-#login .box .logo img{height:64px}
-#login .box h1{font-size:clamp(26px,2.6vw,32px);letter-spacing:-.015em;margin:0 0 6px}
-#login .box a{font-weight:600;text-underline-offset:3px}
-#login .btn.big{margin-top:24px;padding:14px 24px;font-size:16px}
-#login .escola{position:relative;padding:14px 16px 14px 48px;margin:8px 0;border-radius:12px;line-height:1.35}
-#login .escola::before{content:"";position:absolute;left:16px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;border:2px solid var(--ln);background:var(--card)}
-#login .escola.on::before{border-color:var(--g);background:radial-gradient(var(--g) 0 45%,var(--card) 50%)}
-#login .escola.on{box-shadow:0 0 0 3px var(--gs)}
-@media(max-width:860px){
-#login{grid-template-columns:1fr;grid-auto-rows:auto;align-content:start}
-.lg-side{min-height:0;padding:30px 22px 72px}
-.lg-in{padding-top:0}
-.lg-side h2{font-size:24px}
-.lg-side h2 span{font-size:64px;margin-top:2px}
-.lg-side p{margin-top:12px;font-size:15px}
-.lg-art{width:170px}
-.lg-main{place-items:start center;padding:0 14px 32px}
-#login .box{position:relative;z-index:2;margin-top:-44px;padding:22px 20px 24px;background:var(--card);border:1px solid var(--ln);border-radius:20px;box-shadow:var(--sh)}
-#login .box .logo{margin-bottom:20px}
-#login .box .logo img{height:52px}
-}
-/* Controles */
-#login input,#login select,#app input:not([type=checkbox]):not([type=radio]):not([type=file]),#app select,#app textarea{border-radius:10px;background:var(--card);transition:border-color .15s,box-shadow .15s}
-#login .btn,#app .btn{border-radius:10px;font-weight:600;transition:background-color .15s,border-color .15s,transform .1s}
-#app .btn:not(.sec):not(:disabled){box-shadow:0 1px 0 rgba(0,0,0,.08)}
-#app .btn:active:not(:disabled){transform:translateY(1px)}
-#app .btn.sec:hover:not(:disabled){background:var(--gs);border-color:var(--g)}
-/* Estrutura do relatório */
-#app{grid-template-columns:292px minmax(0,1fr);background:var(--bg)}
-#app aside{position:sticky;padding:0 14px 18px;display:flex;flex-direction:column;box-shadow:var(--sh)}
-#app aside::before{content:"";display:block;height:3px;margin:0 -14px;background:linear-gradient(90deg,var(--g),var(--o));flex:none}
-#app aside .logo{margin:20px auto 18px;padding-bottom:18px;border-bottom:1px solid var(--ln)}
-#app aside .logo img{height:50px}
-#app .nav{margin:0;display:grid;gap:2px;flex:1;align-content:start}
-#app .nav li{position:relative;padding:10px 12px;border-radius:10px;line-height:1.3;transition:background-color .15s,color .15s}
-#app .nav li:hover{background:var(--gs)}
-#app .nav li.cur{background:var(--gs);color:var(--g2);box-shadow:inset 3px 0 0 var(--g)}
-#app .dot{width:20px;height:20px;font-size:12px;font-weight:700}
-#app .done .dot{background:var(--ok)}
-#app .cur .dot{border-color:var(--g);box-shadow:0 0 0 3px var(--gs)}
-#app .cur.done .dot{box-shadow:none}
-#app .nav li.obs .dot,#app .nav li.done.obs .dot{background:var(--o);border-color:var(--o);color:#1b1006;font-weight:700}
-#app .nav li.obs.cur .dot{box-shadow:0 0 0 3px color-mix(in srgb,var(--o) 28%,transparent)}
-#app .aside-foot{margin-top:16px;display:grid;gap:8px}
-#app .btn-logout:hover{background:var(--gs);border-color:var(--g);color:var(--g2)}
-#app #btn_sair:hover{color:var(--p);border-color:var(--p)}
-#app main{max-width:920px;padding-top:24px}
-#app .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;font-size:14px}
-#app #where{color:var(--g2);font-weight:600}
-#app #pct{padding:4px 12px;border:1px solid var(--ln);border-radius:99px;background:var(--card);color:var(--mu);font-weight:600;font-size:13px;white-space:nowrap}
-#app .bar{height:10px;border-radius:99px;background:var(--ln)}
-#app .bar i{border-radius:99px}
-#app .card{margin-top:20px;border-radius:16px;box-shadow:var(--sh);padding:clamp(20px,4vw,40px)}
-#app .card h2{font-size:clamp(24px,3.2vw,32px);letter-spacing:-.015em;margin:6px 0 8px}
-#app .card>.sec{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--g2);font-size:14px}
-#app .card>.sec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--o)}
-#app .hint{max-width:68ch;line-height:1.55;margin-bottom:22px}
-#app textarea{line-height:1.65;padding:14px 16px}
-#app .cnt{margin-top:6px}
-#app .nav2{margin-top:28px;padding-top:20px;border-top:1px solid var(--ln)}
-#app .saved{margin-top:12px;font-size:13.5px;color:var(--mu)}
-#app .grid{gap:0 20px}
-#app .chk label{border-radius:99px;transition:background-color .15s,border-color .15s}
-#app .chk label:hover{border-color:var(--g)}
-#app .tw{border:1px solid var(--ln);border-radius:12px;background:var(--card)}
-#app table{border-collapse:separate;border-spacing:0}
-#app th{background:var(--gs);color:var(--g2);font-weight:600;border:0;border-bottom:1px solid var(--ln);padding:10px 12px}
-#app td{border:0;border-bottom:1px solid var(--ln);padding:3px}
-#app tr:last-child td{border-bottom:0}
-#app td input,#app td select{border-radius:8px}
-#app td input:focus,#app td select:focus{background:var(--gs)}
-#app .pf{border-radius:14px;padding:18px;margin:14px 0;background:var(--card);border-left:4px solid var(--g)}
-#app .pf h3{font-size:18px;margin-bottom:4px}
-#app .fin{border-radius:12px;padding:14px 16px;background:var(--gs);border:1px solid var(--ln)}
-#app .ob{border-radius:12px;padding:14px 18px}
-#app .toast{border-radius:12px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
-#app .btn-logout{border-radius:10px;font-weight:600}
-@media(max-width:860px){#app{grid-template-columns:1fr}#app aside{display:none}#app aside.open{display:flex!important}
-#app .mb{padding:10px 12px;margin:-16px -12px 16px;background:var(--card);border-bottom:1px solid var(--ln);position:sticky;top:0;z-index:30}
-#app .mb::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--g),var(--o))}}
-@media(max-width:560px){#app .card{padding:20px 16px}#app .card h2{font-size:22px}}
-@media(prefers-reduced-motion:reduce){#login *,#app *{transition:none!important}}
+
+    /* ===== Redesign v2: login + relatório, na linguagem do painel administrativo ===== */
+    #login,
+    #app {
+      --sh: 0 1px 2px rgba(29, 43, 38, .04), 0 12px 28px -18px rgba(29, 43, 38, .22)
+    }
+
+    @media(prefers-color-scheme:dark) {
+
+      :root:not([data-theme="light"]) #login,
+      :root:not([data-theme="light"]) #app {
+        --sh: none
+      }
+    }
+
+    :root[data-theme="dark"] #login,
+    :root[data-theme="dark"] #app {
+      --sh: none
+    }
+
+    /* Login */
+    #login {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      place-items: stretch;
+      padding: 0;
+      background: var(--bg)
+    }
+
+    .lg-side {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      padding: clamp(32px, 6vw, 88px);
+      background: #12372c;
+      color: #fff;
+      overflow: hidden;
+      min-height: 100vh
+    }
+
+    .lg-side::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 5px;
+      background: linear-gradient(90deg, #438c7c 33%, #f88c45 33% 66%, #eb3073 66%)
+    }
+
+    .lg-in {
+      position: relative;
+      z-index: 1;
+      max-width: 30rem;
+      padding-top: clamp(0px, 8vh, 80px)
+    }
+
+    .lg-side h2 {
+      font-size: clamp(30px, 3.4vw, 46px);
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      font-weight: 700
+    }
+
+    .lg-side h2 span {
+      display: block;
+      margin-top: 4px;
+      font-size: clamp(76px, 10vw, 150px);
+      line-height: .95;
+      letter-spacing: -.05em;
+      font-weight: 800;
+      color: #f88c45
+    }
+
+    .lg-side p {
+      margin: 22px 0 0;
+      color: #b9d6cb;
+      font-size: clamp(16px, 1.3vw, 18px);
+      max-width: 34ch
+    }
+
+    .lg-art {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: min(60%, 400px);
+      aspect-ratio: 1;
+      -webkit-mask: radial-gradient(circle at 100% 100%, #000 30%, transparent 72%);
+      mask: radial-gradient(circle at 100% 100%, #000 30%, transparent 72%);
+      background: radial-gradient(circle at 100% 100%, #f88c45 0 3px, transparent 3.5px), repeating-radial-gradient(circle at 100% 100%, transparent 0 41px, rgba(255, 255, 255, .14) 41px 42px)
+    }
+
+    .lg-main {
+      display: grid;
+      place-items: center;
+      padding: clamp(24px, 4vw, 56px)
+    }
+
+    #login .box {
+      width: 100%;
+      max-width: 420px;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none
+    }
+
+    #login .box .logo {
+      justify-content: flex-start;
+      margin: 0 0 32px
+    }
+
+    #login .box .logo img {
+      height: 64px
+    }
+
+    #login .box h1 {
+      font-size: clamp(26px, 2.6vw, 32px);
+      letter-spacing: -.015em;
+      margin: 0 0 6px
+    }
+
+    #login .box a {
+      font-weight: 600;
+      text-underline-offset: 3px
+    }
+
+    #login .btn.big {
+      margin-top: 24px;
+      padding: 14px 24px;
+      font-size: 16px
+    }
+
+    #login .escola {
+      position: relative;
+      padding: 14px 16px 14px 48px;
+      margin: 8px 0;
+      border-radius: 12px;
+      line-height: 1.35
+    }
+
+    #login .escola::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      margin-top: -9px;
+      border-radius: 50%;
+      border: 2px solid var(--ln);
+      background: var(--card)
+    }
+
+    #login .escola.on::before {
+      border-color: var(--g);
+      background: radial-gradient(var(--g) 0 45%, var(--card) 50%)
+    }
+
+    #login .escola.on {
+      box-shadow: 0 0 0 3px var(--gs)
+    }
+
+    @media(max-width:860px) {
+      #login {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+        align-content: start
+      }
+
+      .lg-side {
+        min-height: 0;
+        padding: 30px 22px 72px
+      }
+
+      .lg-in {
+        padding-top: 0
+      }
+
+      .lg-side h2 {
+        font-size: 24px
+      }
+
+      .lg-side h2 span {
+        font-size: 64px;
+        margin-top: 2px
+      }
+
+      .lg-side p {
+        margin-top: 12px;
+        font-size: 15px
+      }
+
+      .lg-art {
+        width: 170px
+      }
+
+      .lg-main {
+        place-items: start center;
+        padding: 0 14px 32px
+      }
+
+      #login .box {
+        position: relative;
+        z-index: 2;
+        margin-top: -44px;
+        padding: 22px 20px 24px;
+        background: var(--card);
+        border: 1px solid var(--ln);
+        border-radius: 20px;
+        box-shadow: var(--sh)
+      }
+
+      #login .box .logo {
+        margin-bottom: 20px
+      }
+
+      #login .box .logo img {
+        height: 52px
+      }
+    }
+
+    /* Controles */
+    #login input,
+    #login select,
+    #app input:not([type=checkbox]):not([type=radio]):not([type=file]),
+    #app select,
+    #app textarea {
+      border-radius: 10px;
+      background: var(--card);
+      transition: border-color .15s, box-shadow .15s
+    }
+
+    #login .btn,
+    #app .btn {
+      border-radius: 10px;
+      font-weight: 600;
+      transition: background-color .15s, border-color .15s, transform .1s
+    }
+
+    #app .btn:not(.sec):not(:disabled) {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .08)
+    }
+
+    #app .btn:active:not(:disabled) {
+      transform: translateY(1px)
+    }
+
+    #app .btn.sec:hover:not(:disabled) {
+      background: var(--gs);
+      border-color: var(--g)
+    }
+
+    /* Estrutura do relatório */
+    #app {
+      grid-template-columns: 292px minmax(0, 1fr);
+      background: var(--bg)
+    }
+
+    #app aside {
+      position: sticky;
+      padding: 0 14px 18px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--sh)
+    }
+
+    #app aside::before {
+      content: "";
+      display: block;
+      height: 3px;
+      margin: 0 -14px;
+      background: linear-gradient(90deg, var(--g), var(--o));
+      flex: none
+    }
+
+    #app aside .logo {
+      margin: 20px auto 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--ln)
+    }
+
+    #app aside .logo img {
+      height: 50px
+    }
+
+    #app .nav {
+      margin: 0;
+      display: grid;
+      gap: 2px;
+      flex: 1;
+      align-content: start
+    }
+
+    #app .nav li {
+      position: relative;
+      padding: 10px 12px;
+      border-radius: 10px;
+      line-height: 1.3;
+      transition: background-color .15s, color .15s
+    }
+
+    #app .nav li:hover {
+      background: var(--gs)
+    }
+
+    #app .nav li.cur {
+      background: var(--gs);
+      color: var(--g2);
+      box-shadow: inset 3px 0 0 var(--g)
+    }
+
+    #app .dot {
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      font-weight: 700
+    }
+
+    #app .done .dot {
+      background: var(--ok)
+    }
+
+    #app .cur .dot {
+      border-color: var(--g);
+      box-shadow: 0 0 0 3px var(--gs)
+    }
+
+    #app .cur.done .dot {
+      box-shadow: none
+    }
+
+    #app .nav li.obs .dot,
+    #app .nav li.done.obs .dot {
+      background: var(--o);
+      border-color: var(--o);
+      color: #1b1006;
+      font-weight: 700
+    }
+
+    #app .nav li.obs.cur .dot {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--o) 28%, transparent)
+    }
+
+    #app .aside-foot {
+      margin-top: 16px;
+      display: grid;
+      gap: 8px
+    }
+
+    #app .btn-logout:hover {
+      background: var(--gs);
+      border-color: var(--g);
+      color: var(--g2)
+    }
+
+    #app #btn_sair:hover {
+      color: var(--p);
+      border-color: var(--p)
+    }
+
+    #app main {
+      max-width: 920px;
+      padding-top: 24px
+    }
+
+    #app .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 10px;
+      font-size: 14px
+    }
+
+    #app #where {
+      color: var(--g2);
+      font-weight: 600
+    }
+
+    #app #pct {
+      padding: 4px 12px;
+      border: 1px solid var(--ln);
+      border-radius: 99px;
+      background: var(--card);
+      color: var(--mu);
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap
+    }
+
+    #app .bar {
+      height: 10px;
+      border-radius: 99px;
+      background: var(--ln)
+    }
+
+    #app .bar i {
+      border-radius: 99px
+    }
+
+    #app .card {
+      margin-top: 20px;
+      border-radius: 16px;
+      box-shadow: var(--sh);
+      padding: clamp(20px, 4vw, 40px)
+    }
+
+    #app .card h2 {
+      font-size: clamp(24px, 3.2vw, 32px);
+      letter-spacing: -.015em;
+      margin: 6px 0 8px
+    }
+
+    #app .card>.sec {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--g2);
+      font-size: 14px
+    }
+
+    #app .card>.sec::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--o)
+    }
+
+    #app .hint {
+      max-width: 68ch;
+      line-height: 1.55;
+      margin-bottom: 22px
+    }
+
+    #app textarea {
+      line-height: 1.65;
+      padding: 14px 16px
+    }
+
+    #app .cnt {
+      margin-top: 6px
+    }
+
+    #app .nav2 {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--ln)
+    }
+
+    #app .saved {
+      margin-top: 12px;
+      font-size: 13.5px;
+      color: var(--mu)
+    }
+
+    #app .grid {
+      gap: 0 20px
+    }
+
+    #app .chk label {
+      border-radius: 99px;
+      transition: background-color .15s, border-color .15s
+    }
+
+    #app .chk label:hover {
+      border-color: var(--g)
+    }
+
+    #app .tw {
+      border: 1px solid var(--ln);
+      border-radius: 12px;
+      background: var(--card)
+    }
+
+    #app table {
+      border-collapse: separate;
+      border-spacing: 0
+    }
+
+    #app th {
+      background: var(--gs);
+      color: var(--g2);
+      font-weight: 600;
+      border: 0;
+      border-bottom: 1px solid var(--ln);
+      padding: 10px 12px
+    }
+
+    #app td {
+      border: 0;
+      border-bottom: 1px solid var(--ln);
+      padding: 3px
+    }
+
+    #app tr:last-child td {
+      border-bottom: 0
+    }
+
+    #app td input,
+    #app td select {
+      border-radius: 8px
+    }
+
+    #app td input:focus,
+    #app td select:focus {
+      background: var(--gs)
+    }
+
+    #app .pf {
+      border-radius: 14px;
+      padding: 18px;
+      margin: 14px 0;
+      background: var(--card);
+      border-left: 4px solid var(--g)
+    }
+
+    #app .pf h3 {
+      font-size: 18px;
+      margin-bottom: 4px
+    }
+
+    #app .fin {
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: var(--gs);
+      border: 1px solid var(--ln)
+    }
+
+    #app .ob {
+      border-radius: 12px;
+      padding: 14px 18px
+    }
+
+    #app .toast {
+      border-radius: 12px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .4)
+    }
+
+    #app .btn-logout {
+      border-radius: 10px;
+      font-weight: 600
+    }
+
+    @media(max-width:860px) {
+      #app {
+        grid-template-columns: 1fr
+      }
+
+      #app aside {
+        display: none
+      }
+
+      #app aside.open {
+        display: flex !important
+      }
+
+      #app .mb {
+        padding: 10px 12px;
+        margin: -16px -12px 16px;
+        background: var(--card);
+        border-bottom: 1px solid var(--ln);
+        position: sticky;
+        top: 0;
+        z-index: 30
+      }
+
+      #app .mb::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--g), var(--o))
+      }
+    }
+
+    @media(max-width:560px) {
+      #app .card {
+        padding: 20px 16px
+      }
+
+      #app .card h2 {
+        font-size: 22px
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      #login *,
+      #app * {
+        transition: none !important
+      }
+    }
   </style>
 </head>
 
@@ -1961,43 +2598,48 @@
       </div>
       <div class="lg-art" aria-hidden="true"></div>
     </div>
-    <div class="lg-main"><div class="box">
-      <span class="logo"><img id="login_logo" src="logo.svg" alt="Prefeitura de Lagoa da Canoa – Secretaria Municipal de Educação"></span>
-      <h1>Acesse o seu relatório</h1>
-      <div id="s1"><label for="cpf">Seu CPF</label><input id="cpf" type="text" inputmode="numeric" maxlength="14"
-          placeholder="000.000.000-00" autocomplete="off">
-        <div class="err" id="e1"></div><button class="btn big" id="b1">Continuar</button>
-        <p style="text-align:center;margin:18px 0 0"><a href="#" id="ladm">Acesso administrativo</a></p>
-      </div>
-      <div id="s3" style="display:none"><label for="pw">Senha do painel administrativo</label>
-        <div style="position:relative">
-          <input id="pw" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"
-            placeholder="Digite a senha" style="padding-right:44px">
-          <button type="button" id="shpw"
-            style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:6px 8px;color:var(--mu);font-size:16px;line-height:1"
-            title="Mostrar/ocultar senha" aria-label="Mostrar/ocultar senha">👁</button>
+    <div class="lg-main">
+      <div class="box">
+        <span class="logo"><img id="login_logo" src="logo.svg"
+            alt="Prefeitura de Lagoa da Canoa – Secretaria Municipal de Educação"></span>
+        <h1>Acesse o seu relatório</h1>
+        <div id="s1"><label for="cpf">Seu CPF</label><input id="cpf" type="text" inputmode="numeric" maxlength="14"
+            placeholder="000.000.000-00" autocomplete="off">
+          <div class="err" id="e1"></div><button class="btn big" id="b1">Continuar</button>
+          <p style="text-align:center;margin:18px 0 0"><a href="#" id="ladm">Acesso administrativo</a></p>
         </div>
-        <div class="err" id="e3"></div><button class="btn big" id="b3">Entrar no painel</button>
-        <p style="text-align:center;margin:18px 0 0"><a href="#" id="lvolt">Voltar</a></p>
+        <div id="s3" style="display:none"><label for="pw">Senha do painel administrativo</label>
+          <div style="position:relative">
+            <input id="pw" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false"
+              placeholder="Digite a senha" style="padding-right:44px">
+            <button type="button" id="shpw"
+              style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:6px 8px;color:var(--mu);font-size:16px;line-height:1"
+              title="Mostrar/ocultar senha" aria-label="Mostrar/ocultar senha">👁</button>
+          </div>
+          <div class="err" id="e3"></div><button class="btn big" id="b3">Entrar no painel</button>
+          <p style="text-align:center;margin:18px 0 0"><a href="#" id="lvolt">Voltar</a></p>
+        </div>
+        <div id="s2" style="display:none">
+          <p id="hi" style="margin:0 0 6px;color:var(--tx);font-weight:600"></p><span style="color:var(--mu)">Selecione
+            a
+            unidade escolar:</span>
+          <div id="esc"></div>
+          <div class="err" id="e2"></div><button class="btn big" id="b2" disabled>Abrir relatório</button>
+          <p style="text-align:center;margin:18px 0 0"><a href="#" id="lnova">Vincular outra escola</a></p>
+        </div>
+        <div id="s4" style="display:none">
+          <p style="margin:0 0 6px;color:var(--tx);font-weight:600">Primeiro acesso</p><span
+            style="color:var(--mu)">Informe seus dados e escolha a sua unidade escolar. Cada escola pode ser vinculada a
+            uma única pessoa.</span><label for="vn">Nome completo</label><input type="text" id="vn"
+            autocomplete="name"><label for="vemail">E-mail para contato</label><input type="email" id="vemail"
+            placeholder="diretor@exemplo.com" autocomplete="email"><label for="vf">Função</label><select
+            id="vf"></select><label for="ve">Unidade
+            escolar</label><select id="ve"></select>
+          <div class="err" id="e4"></div><button class="btn big" id="b4">Vincular e abrir relatório</button>
+          <p style="text-align:center;margin:18px 0 0"><a href="#" id="l4v">Voltar</a></p>
+        </div>
       </div>
-      <div id="s2" style="display:none">
-        <p id="hi" style="margin:0 0 6px;color:var(--tx);font-weight:600"></p><span style="color:var(--mu)">Selecione a
-          unidade escolar:</span>
-        <div id="esc"></div>
-        <div class="err" id="e2"></div><button class="btn big" id="b2" disabled>Abrir relatório</button>
-        <p style="text-align:center;margin:18px 0 0"><a href="#" id="lnova">Vincular outra escola</a></p>
-      </div>
-      <div id="s4" style="display:none">
-        <p style="margin:0 0 6px;color:var(--tx);font-weight:600">Primeiro acesso</p><span
-          style="color:var(--mu)">Informe seus dados e escolha a sua unidade escolar. Cada escola pode ser vinculada a
-          uma única pessoa.</span><label for="vn">Nome completo</label><input type="text" id="vn"
-          autocomplete="name"><label for="vemail">E-mail para contato</label><input type="email" id="vemail"
-          placeholder="diretor@exemplo.com" autocomplete="email"><label for="vf">Função</label><select id="vf"></select><label for="ve">Unidade
-          escolar</label><select id="ve"></select>
-        <div class="err" id="e4"></div><button class="btn big" id="b4">Vincular e abrir relatório</button>
-        <p style="text-align:center;margin:18px 0 0"><a href="#" id="l4v">Voltar</a></p>
-      </div>
-    </div></div>
+    </div>
   </div>
 
   <div id="app">
@@ -2008,11 +2650,18 @@
       <ul class="nav" id="nav"></ul>
       <div class="aside-foot">
         <button type="button" class="btn-logout" id="btn_troca" title="Voltar para a lista de escolas">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="17 1 21 5 17 9"></polyline>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+            <polyline points="7 23 3 19 7 15"></polyline>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+          </svg>
           Trocar de escola
         </button>
         <button type="button" class="btn-logout" id="btn_sair" title="Sair do relatório">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -2022,7 +2671,8 @@
       </div>
     </aside>
     <main>
-      <div class="mb"><span class="logo"><img src="logo.svg" alt="Prefeitura de Lagoa da Canoa – SEMED" style="height:34px"></span><button type="button" class="btn sec" id="m_menu_btn">☰ Seções</button></div>
+      <div class="mb"><span class="logo"><img src="logo.svg" alt="Prefeitura de Lagoa da Canoa – SEMED"
+            style="height:34px"></span><button type="button" class="btn sec" id="m_menu_btn">☰ Seções</button></div>
       <div class="top"><span id="where"></span><span id="pct"></span></div>
       <div class="bar"><i id="pb"></i></div>
       <div class="card" id="card"></div>
@@ -2031,8 +2681,17 @@
   <div id="adm">
     <header class="ah"><img id="alg" src="logo.svg" alt="Prefeitura de Lagoa da Canoa – SEMED">
       <div class="ah-act">
-        <button type="button" class="hb" id="ar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>Atualizar</button>
-        <button type="button" class="hb" id="as"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Sair</button>
+        <button type="button" class="hb" id="ar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-3-6.7" />
+            <path d="M21 4v5h-5" />
+          </svg>Atualizar</button>
+        <button type="button" class="hb" id="as"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <path d="m16 17 5-5-5-5" />
+            <path d="M21 12H9" />
+          </svg>Sair</button>
       </div>
     </header>
     <main class="am">
@@ -2047,7 +2706,11 @@
         <div class="adm-panels">
           <div class="adm-card">
             <div class="adm-card-head">
-              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div>
+              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="17" rx="2" />
+                  <path d="M3 10h18M8 2v4M16 2v4" />
+                </svg></div>
               <div>
                 <h3 class="adm-card-title">Prazo de edição</h3>
                 <p class="adm-card-desc">Define a data limite para envio e edições pelas escolas</p>
@@ -2063,7 +2726,11 @@
 
           <div class="adm-card">
             <div class="adm-card-head">
-              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg></div>
               <div>
                 <h3 class="adm-card-title">E-mail da SEMED para avisos</h3>
                 <p class="adm-card-desc">Recebe notificações de relatórios finalizados e correções</p>
@@ -2078,7 +2745,12 @@
 
           <div class="adm-card">
             <div class="adm-card-head">
-              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M10 21v-5h4v5"/></svg></div>
+              <div class="adm-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 21h18" />
+                  <path d="M5 21V9l7-5 7 5v12" />
+                  <path d="M10 21v-5h4v5" />
+                </svg></div>
               <div>
                 <h3 class="adm-card-title">Cadastrar unidade escolar</h3>
                 <p class="adm-card-desc">Adiciona uma nova escola à rede de Lagoa da Canoa</p>
@@ -2096,7 +2768,12 @@
       <section class="lst" aria-labelledby="lstt">
         <h2 id="lstt">Escolas da rede</h2>
         <div class="tb">
-          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="aq" placeholder="Buscar por escola, responsável ou e-mail" aria-label="Buscar escola ou responsável"></div>
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg><input type="search" id="aq" placeholder="Buscar por escola, responsável ou e-mail"
+              aria-label="Buscar escola ou responsável"></div>
           <div class="tb-info" id="acount" aria-live="polite"></div>
         </div>
         <div class="tw tcard">
@@ -2188,13 +2865,13 @@
             ENC
           }));
         }
-      } catch (e) {}
+      } catch (e) { }
     }
     function clearSession() {
       try {
         localStorage.removeItem('rre26:session');
         localStorage.removeItem('rre26:admin_data');
-      } catch (e) {}
+      } catch (e) { }
     }
     async function logout() {
       const s = S[i];
@@ -2212,7 +2889,7 @@
         $('#app').style.display = 'none';
         $('#adm').style.display = 'block';
         loadAdminCache();
-        carrega().catch(() => {});
+        carrega().catch(() => { });
         return;
       }
       clearSession();
@@ -2359,7 +3036,7 @@
       try {
         const r = await api({ action: 'vincular', cpf: U.cpf, nome: n, email: em, funcao: f, escola: e });
         if (!r.ok) { if (r.ocupada) await abreVinculo(); er.textContent = r.erro || 'Não foi possível vincular.'; if (!r.ocupada) $('#b4').disabled = false; return }
-        U.nome = r.nome; U.escolas = r.escolas; U.funcoes = r.funcoes || {}; U.emails = r.emails || {}; if (em) { U.emails[e] = em; try { localStorage.setItem('rre26:esc_email:' + e, em); } catch(err){} } ESC = e; ESC_EMAIL = em || (U.emails && U.emails[e]) || ''; mostraLista(); pick(U.escolas.indexOf(e)); $('#b2').onclick()
+        U.nome = r.nome; U.escolas = r.escolas; U.funcoes = r.funcoes || {}; U.emails = r.emails || {}; if (em) { U.emails[e] = em; try { localStorage.setItem('rre26:esc_email:' + e, em); } catch (err) { } } ESC = e; ESC_EMAIL = em || (U.emails && U.emails[e]) || ''; mostraLista(); pick(U.escolas.indexOf(e)); $('#b2').onclick()
       }
       catch (x) { er.textContent = 'Não foi possível conectar. Verifique a internet e tente de novo.'; $('#b4').disabled = false }
     };
@@ -2368,7 +3045,7 @@
       $('#b2').disabled = true; $('#e2').textContent = ''; try {
         const r = await api({ action: 'load', cpf: U.cpf, escola: ESC }); if (!r.ok) throw 0;
         D = {}; done = {}; for (const k in r.respostas) D[k] = parse(k, r.respostas[k]); (r.concluidas || []).forEach(k => done[k] = 1); PRAZO = r.prazo || ''; ENC = !!r.encerrado; OBS = r.obs || {}; ADMV = false;
-        const locEm = localStorage.getItem('rre26:esc_email:' + ESC) || ''; ESC_EMAIL = r.email || (U && U.emails && U.emails[ESC]) || locEm || ''; if (ESC_EMAIL) { if (U && U.emails) U.emails[ESC] = ESC_EMAIL; try { localStorage.setItem('rre26:esc_email:' + ESC, ESC_EMAIL); } catch(err){} }
+        const locEm = localStorage.getItem('rre26:esc_email:' + ESC) || ''; ESC_EMAIL = r.email || (U && U.emails && U.emails[ESC]) || locEm || ''; if (ESC_EMAIL) { if (U && U.emails) U.emails[ESC] = ESC_EMAIL; try { localStorage.setItem('rre26:esc_email:' + ESC, ESC_EMAIL); } catch (err) { } }
         if (!D.ident) { const fn = (U.funcoes || {})[ESC] || ''; D.ident = { unidade: ESC, turnos: [], etapas: [], data: new Date().toISOString().slice(0, 10), diretor: /^Diretor/.test(fn) ? U.nome : '', vice: /^Vice/.test(fn) ? U.nome : '', coord: /^Coordenador/.test(fn) ? U.nome : '' } }
         savedSnapshot = {}; S.forEach(x => { savedSnapshot[x.id] = ser(x) });
         if (PARAM_ETAPA && S.some(s => s.id === PARAM_ETAPA)) {
@@ -2537,7 +3214,7 @@
           $('#app').style.display = 'none';
           $('#adm').style.display = 'block';
           loadAdminCache();
-          carrega().catch(() => {});
+          carrega().catch(() => { });
         };
       }
       (R.bind[s.type || 'txt'] || (() => { }))(s);
@@ -2779,17 +3456,17 @@
 
               <!-- PÁGINA 3 EM DIANTE: IDENTIFICAÇÃO E CONTINUAÇÃO DIRETA SEM QUEBRA -->
               <h1 id="sec-ident">1. IDENTIFICAÇÃO DA UNIDADE ESCOLAR</h1>` +
-              tb(['Campo', 'Informação'], [
-                ['Unidade escolar', ESC],
-                ['Diretor(a)', id.diretor],
-                ['Vice-diretor(a)', id.vice],
-                ['Coordenador(a) pedagógico(a)', id.coord],
-                ['Estudantes matriculados', id.matric],
-                ['Quantidade de turmas', id.turmas],
-                ['Turnos de funcionamento', (id.turnos || []).join(', ')],
-                ['Etapas e modalidades', (id.etapas || []).join(', ')],
-                ['Data de elaboração', id.data ? id.data.split('-').reverse().join('/') : '']
-              ]);
+        tb(['Campo', 'Informação'], [
+          ['Unidade escolar', ESC],
+          ['Diretor(a)', id.diretor],
+          ['Vice-diretor(a)', id.vice],
+          ['Coordenador(a) pedagógico(a)', id.coord],
+          ['Estudantes matriculados', id.matric],
+          ['Quantidade de turmas', id.turmas],
+          ['Turnos de funcionamento', (id.turnos || []).join(', ')],
+          ['Etapas e modalidades', (id.etapas || []).join(', ')],
+          ['Data de elaboração', id.data ? id.data.split('-').reverse().join('/') : '']
+        ]);
 
       // Conteúdo das seções
       let sec = '', sub = '', secCount = 1;
@@ -2939,7 +3616,7 @@
       const prevEmail = ESC_EMAIL;
       ESC_EMAIL = trimmed;
       if (U && U.emails) U.emails[ESC] = trimmed;
-      try { localStorage.setItem('rre26:esc_email:' + ESC, trimmed); } catch(err){}
+      try { localStorage.setItem('rre26:esc_email:' + ESC, trimmed); } catch (err) { }
       const curr = AD.find(x => x.escola === ESC);
       if (curr) curr.email = trimmed;
       saveAdminCache();
@@ -3023,7 +3700,7 @@
           emailAdmin: ($('#aem') && $('#aem').value) || '',
           savedAt: Date.now()
         }));
-      } catch (e) {}
+      } catch (e) { }
     }
     function loadAdminCache() {
       try {
@@ -3082,7 +3759,7 @@
           if (raw.toLowerCase() === 'semed2026' && ADM !== 'semed2026') {
             ADM = 'semed2026';
             saveSession();
-            carrega().catch(() => {});
+            carrega().catch(() => { });
           }
         });
         return;
@@ -3151,7 +3828,7 @@
       try {
         ESC_EMAIL = em;
         if (U && U.emails) U.emails[ESC] = em;
-        try { localStorage.setItem('rre26:esc_email:' + ESC, em); } catch(err){}
+        try { localStorage.setItem('rre26:esc_email:' + ESC, em); } catch (err) { }
         saveSession();
         draw();
         const r = await api({ action: 'atualizar_email', cpf: U.cpf, escola: ESC, email: em });
@@ -3497,11 +4174,11 @@
             if (r.email) {
               ESC_EMAIL = r.email;
               if (U && U.emails) U.emails[ESC] = r.email;
-              try { localStorage.setItem('rre26:esc_email:' + ESC, r.email); } catch(err){}
+              try { localStorage.setItem('rre26:esc_email:' + ESC, r.email); } catch (err) { }
             }
             saveSession();
             draw();
-          }).catch(() => {});
+          }).catch(() => { });
         } else if (sess.mode === 'adm' && sess.adm) {
           ADM = sess.adm;
           if (sess.escola) {
@@ -3527,13 +4204,13 @@
               OBS = r.obs || {};
               saveSession();
               draw();
-            }).catch(() => {});
+            }).catch(() => { });
           } else {
             $('#login').style.display = 'none';
             $('#adm').style.display = 'block';
             $('#alg').src = LOGO;
             loadAdminCache();
-            carrega().catch(() => {});
+            carrega().catch(() => { });
           }
         }
       } catch (err) {
