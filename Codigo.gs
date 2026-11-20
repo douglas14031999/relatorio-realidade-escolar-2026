@@ -234,6 +234,148 @@ function dono(cpf, escola) {
 }
 
 /* ---------- envio de notificações por e-mail ---------- */
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function emailLayoutBase(previewText, title, greetingHtml, cardsHtml, btnText, btnLink, disclaimerText) {
+  const logoUrl = 'https://douglas14031999.github.io/relatorio-realidade-escolar-2026/logo-email.png';
+  const cleanLink = /^https?:\/\//i.test(btnLink || '') ? btnLink : '';
+  const disc = disclaimerText || 'Mensagem automática do Relatório da Realidade Escolar 2026. Em caso de dúvida, responda a este e-mail.';
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>${escapeHtml(title)}</title>
+<style>
+  body { margin:0; padding:0; background:#EEF3F0; }
+  table { border-collapse:collapse; }
+  img { border:0; display:block; }
+  a { color:#1F5A45; }
+  @media only screen and (max-width:620px) {
+    .wrap { width:100% !important; }
+    .pad { padding-left:22px !important; padding-right:22px !important; }
+    .title { font-size:22px !important; line-height:30px !important; }
+    .btn a { display:block !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#EEF3F0;">
+
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px;line-height:1px;color:#EEF3F0;">
+  ${escapeHtml(previewText)}
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEF3F0;">
+<tr><td align="center" style="padding:28px 12px;">
+
+  <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:#FFFFFF;border-radius:16px;overflow:hidden;">
+
+    <!-- Faixa tricolor (cores da logo) -->
+    <tr>
+      <td height="6" style="font-size:0;line-height:0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="60%" height="6" bgcolor="#3A8266" style="font-size:0;line-height:0;">&nbsp;</td>
+            <td width="22%" height="6" bgcolor="#FF7A2B" style="font-size:0;line-height:0;">&nbsp;</td>
+            <td width="18%" height="6" bgcolor="#E8005F" style="font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Cabeçalho com a logo -->
+    <tr>
+      <td align="center" class="pad" style="padding:30px 36px 22px 36px;background:#FFFFFF;">
+        <img src="${logoUrl}" width="128" alt="Prefeitura de Lagoa da Canoa – Nossa gente, nosso orgulho." style="width:128px;height:auto;margin:0 auto;">
+        <div style="margin-top:18px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#5B6B64;letter-spacing:0.3px;">
+          Secretaria Municipal de Educação
+        </div>
+      </td>
+    </tr>
+
+    <!-- Título -->
+    <tr>
+      <td class="pad" style="padding:8px 40px 0 40px;border-top:1px solid #E3ECE7;">
+        <h1 class="title" style="margin:26px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:33px;font-weight:bold;color:#1F5A45;">
+          ${escapeHtml(title)}
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Saudação / Mensagem inicial -->
+    <tr>
+      <td class="pad" style="padding:16px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:25px;color:#33413B;">
+        ${greetingHtml}
+      </td>
+    </tr>
+
+    <!-- Blocos de conteúdo / Cards -->
+    ${cardsHtml}
+
+    <!-- Botão de Ação -->
+    ${cleanLink ? `
+    <tr>
+      <td align="center" class="pad btn" style="padding:32px 40px 0 40px;">
+        <!--[if mso]>
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="${cleanLink}" style="height:50px;v-text-anchor:middle;width:300px;" arcsize="16%" stroke="f" fillcolor="#1F5A45">
+          <w:anchorlock/>
+          <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">${escapeHtml(btnText)}</center>
+        </v:roundrect>
+        <![endif]-->
+        <!--[if !mso]><!-- -->
+        <a href="${cleanLink}" target="_blank" style="display:inline-block;background:#1F5A45;color:#FFFFFF;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:20px;font-weight:bold;text-decoration:none;padding:15px 38px;border-radius:8px;border-bottom:3px solid #14402F;">${escapeHtml(btnText)}</a>
+        <!--<![endif]-->
+      </td>
+    </tr>
+
+    <!-- Link alternativo para copiar -->
+    <tr>
+      <td align="center" class="pad" style="padding:22px 40px 34px 40px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#7A8882;">
+        O botão não abriu? Copie e cole este endereço no navegador:<br>
+        <a href="${cleanLink}" target="_blank" style="color:#1F5A45;word-break:break-all;">${cleanLink}</a>
+      </td>
+    </tr>
+    ` : ''}
+
+    <!-- Rodapé -->
+    <tr>
+      <td align="center" class="pad" bgcolor="#1F5A45" style="padding:22px 36px;background:#1F5A45;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:22px;font-weight:bold;color:#FFFFFF;">
+          Nossa gente, nosso orgulho.
+        </div>
+        <div style="margin-top:8px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#B9D4C8;">
+          Prefeitura Municipal de Lagoa da Canoa · Secretaria Municipal de Educação
+        </div>
+      </td>
+    </tr>
+
+  </table>
+
+  <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+    <tr>
+      <td align="center" style="padding:16px 20px 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#7A8882;">
+        ${escapeHtml(disc)}
+      </td>
+    </tr>
+  </table>
+
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
 function enviarEmailObservacao(escolaNome, etapaId, etapaTitulo, obsTexto, appUrlParam) {
   try {
     if (!escolaNome) {
@@ -245,43 +387,48 @@ function enviarEmailObservacao(escolaNome, etapaId, etapaTitulo, obsTexto, appUr
       Logger.log('Aviso: Escola sem e-mail cadastrado para envio de observação: ' + escolaNome);
       return false;
     }
-    const rawBase = appUrlParam || appUrl() || '';
+    const rawBase = appUrlParam || appUrl() || URL_PADRAO_SISTEMA || '';
     const base = /^https?:\/\//i.test(rawBase) ? rawBase : '';
     const link = base ? (base + (base.includes('?') ? '&' : '?') + 'escola=' + encodeURIComponent(escolaNome) + '&etapa=' + encodeURIComponent(etapaId)) : '';
 
-    const html = `
-    <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#2c3e50;max-width:600px;margin:0 auto;border:1px solid #d0e6dc;border-radius:12px;overflow:hidden;background:#ffffff;">
-      <div style="background-color:#205645;padding:24px 20px;text-align:center;color:#ffffff;">
-        <h2 style="margin:0;font-size:18px;letter-spacing:0.5px;">PREFEITURA MUNICIPAL DE LAGOA DA CANOA</h2>
-        <div style="font-size:13px;opacity:0.9;margin-top:4px;">SECRETARIA MUNICIPAL DE EDUCAÇÃO · SEMED</div>
-      </div>
-      <div style="padding:28px 24px;">
-        <h3 style="margin-top:0;color:#205645;font-size:17px;">Observação da SEMED no Relatório da Realidade Escolar</h3>
-        <p style="font-size:14px;margin-bottom:12px;">Olá, <b>${esc.nome || 'Gestor(a)'}</b>${esc.funcao ? ' (' + esc.funcao + ')' : ''},</p>
-        <p style="font-size:14px;margin-bottom:16px;">A equipe da SEMED registrou uma observação referente ao relatório da sua unidade escolar:</p>
-        
-        <div style="background:#eef6f3;border-left:4px solid #205645;padding:12px 16px;border-radius:4px;margin-bottom:20px;">
-          <strong style="color:#205645;font-size:15px;">${escolaNome}</strong><br>
-          <span style="font-size:13px;color:#555;">Etapa: <b>${etapaTitulo || etapaId}</b></span>
-        </div>
+    const preview = `A SEMED registrou uma observação sobre o relatório de ${escolaNome}.`;
+    const title = 'A SEMED deixou uma observação no relatório da sua escola';
+    const greeting = `Olá, <strong style="color:#1B2621;">${escapeHtml(esc.nome || 'Gestor(a)')}</strong> (${escapeHtml(esc.funcao || 'Equipe Gestora')}).<br>A equipe da SEMED analisou o relatório da sua unidade escolar e registrou o ajuste abaixo.`;
 
-        <div style="background:#fff9f0;border:1px solid #fbd38d;border-left:4px solid #dd6b20;padding:16px;border-radius:6px;margin-bottom:24px;">
-          <div style="font-weight:bold;color:#c05621;font-size:13px;margin-bottom:6px;text-transform:uppercase;">Instrução / Ajuste Solicitado:</div>
-          <div style="font-size:14px;color:#2d3748;white-space:pre-wrap;">${obsTexto}</div>
-        </div>
+    const cards = `
+    <!-- Escola e etapa -->
+    <tr>
+      <td class="pad" style="padding:24px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5" bgcolor="#3A8266" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#EEF5F1" style="padding:14px 18px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:12px;line-height:16px;color:#5B6B64;">Escola</div>
+              <div style="margin-top:2px;font-size:16px;line-height:22px;font-weight:bold;color:#1F5A45;">${escapeHtml(escolaNome)}</div>
+              <div style="margin-top:10px;font-size:12px;line-height:16px;color:#5B6B64;">Etapa do relatório</div>
+              <div style="margin-top:2px;font-size:15px;line-height:21px;font-weight:bold;color:#1B2621;">${escapeHtml(etapaTitulo || etapaId)}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
 
-        ${link ? `
-        <div style="text-align:center;margin:30px 0;">
-          <a href="${link}" style="background-color:#205645;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:8px;display:inline-block;box-shadow:0 3px 6px rgba(0,0,0,0.12);">Acessar Etapa no Relatório</a>
-        </div>
-        <p style="font-size:12px;color:#718096;text-align:center;">Se o botão não abrir diretamente, acesse pelo link:<br><a href="${link}" style="color:#205645;word-break:break-all;">${link}</a></p>
-        ` : ''}
+    <!-- Ajuste solicitado (destaque principal) -->
+    <tr>
+      <td class="pad" style="padding:14px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5" bgcolor="#FF7A2B" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#FFF4EB" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:13px;line-height:18px;font-weight:bold;color:#B8470A;">Ajuste solicitado</div>
+              <div style="margin-top:6px;font-size:17px;line-height:26px;color:#2A2018;">${escapeHtml(obsTexto).replace(/\n/g, '<br>')}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
 
-        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-        <p style="font-size:12px;color:#a0aec0;margin-bottom:0;">Mensagem automática do Relatório da Realidade Escolar 2026 · SEMED Lagoa da Canoa - AL.</p>
-      </div>
-    </div>
-    `;
+    const html = emailLayoutBase(preview, title, greeting, cards, 'Abrir etapa no relatório', link);
 
     MailApp.sendEmail({
       to: esc.email,
@@ -307,50 +454,40 @@ function enviarEmailFinalizacao(escolaNome, responsavelNome, responsavelFuncao, 
       Logger.log('Aviso: E-mail da SEMED não configurado. Notificação de finalização não enviada.');
       return false;
     }
-    const rawBase = appUrlParam || appUrl() || '';
+    const rawBase = appUrlParam || appUrl() || URL_PADRAO_SISTEMA || '';
     const base = /^https?:\/\//i.test(rawBase) ? rawBase : '';
     const link = base ? (base + (base.includes('?') ? '&' : '?') + 'admin=1') : '';
 
-    const html = `
-    <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#2c3e50;max-width:600px;margin:0 auto;border:1px solid #d0e6dc;border-radius:12px;overflow:hidden;background:#ffffff;">
-      <div style="background-color:#205645;padding:24px 20px;text-align:center;color:#ffffff;">
-        <h2 style="margin:0;font-size:18px;letter-spacing:0.5px;">PREFEITURA MUNICIPAL DE LAGOA DA CANOA</h2>
-        <div style="font-size:13px;opacity:0.9;margin-top:4px;">SECRETARIA MUNICIPAL DE EDUCAÇÃO · SEMED</div>
-      </div>
-      <div style="padding:28px 24px;">
-        <div style="background:#e6fffa;border:1px solid #b2f5ea;border-left:4px solid #319795;padding:12px 16px;border-radius:4px;margin-bottom:20px;">
-          <h3 style="margin:0;color:#234e52;font-size:16px;">✓ Relatório da Realidade Escolar 2026 Concluído</h3>
-        </div>
-        
-        <p style="font-size:14px;">Prezada equipe da SEMED,</p>
-        <p style="font-size:14px;">A unidade escolar <b>${escolaNome}</b> gravou a etapa final de <b>Conclusão e Assinaturas</b> do Relatório da Realidade Escolar 2026.</p>
+    const preview = `A unidade escolar ${escolaNome} concluiu o Relatório da Realidade Escolar 2026.`;
+    const title = 'Relatório da Realidade Escolar 2026 Finalizado';
+    const greeting = `Olá, equipe da SEMED.<br>A unidade escolar abaixo concluiu o preenchimento e assinou todas as etapas do Relatório da Realidade Escolar 2026:`;
 
-        <table style="width:100%;font-size:13px;border-collapse:collapse;margin:16px 0;background:#f7fafc;border-radius:6px;overflow:hidden;">
+    const cards = `
+    <!-- Resumo de Conclusão -->
+    <tr>
+      <td class="pad" style="padding:24px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:10px 14px;border-bottom:1px solid #edf2f7;font-weight:bold;color:#4a5568;width:35%;">Unidade Escolar:</td>
-            <td style="padding:10px 14px;border-bottom:1px solid #edf2f7;color:#1a202c;"><b>${escolaNome}</b></td>
-          </tr>
-          <tr>
-            <td style="padding:10px 14px;border-bottom:1px solid #edf2f7;font-weight:bold;color:#4a5568;">Responsável:</td>
-            <td style="padding:10px 14px;border-bottom:1px solid #edf2f7;color:#1a202c;">${responsavelNome || 'Gestor'} (${responsavelFuncao || 'Equipe Diretiva'})</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 14px;font-weight:bold;color:#4a5568;">Data / Horário:</td>
-            <td style="padding:10px 14px;color:#1a202c;">${quando(new Date())}</td>
+            <td width="5" bgcolor="#3A8266" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#EEF5F1" style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:12px;line-height:16px;color:#5B6B64;">Unidade escolar</div>
+              <div style="margin-top:2px;font-size:17px;line-height:23px;font-weight:bold;color:#1F5A45;">${escapeHtml(escolaNome)}</div>
+              
+              <div style="margin-top:12px;font-size:12px;line-height:16px;color:#5B6B64;">Responsável pelo envio</div>
+              <div style="margin-top:2px;font-size:15px;line-height:21px;font-weight:bold;color:#1B2621;">${escapeHtml(responsavelNome || 'Gestor(a)')} (${escapeHtml(responsavelFuncao || 'Equipe Diretiva')})</div>
+              
+              <div style="margin-top:12px;font-size:12px;line-height:16px;color:#5B6B64;">Data de finalização</div>
+              <div style="margin-top:2px;font-size:14px;line-height:20px;color:#33413B;">${quando(new Date())}</div>
+
+              <div style="margin-top:12px;font-size:12px;line-height:16px;color:#5B6B64;">Situação</div>
+              <div style="margin-top:2px;font-size:14px;line-height:20px;font-weight:bold;color:#2F7A62;">✓ Todas as 30 etapas concluídas e assinadas</div>
+            </td>
           </tr>
         </table>
+      </td>
+    </tr>`;
 
-        ${link ? `
-        <div style="text-align:center;margin:28px 0;">
-          <a href="${link}" style="background-color:#205645;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:8px;display:inline-block;box-shadow:0 3px 6px rgba(0,0,0,0.12);">Abrir Painel Administrativo</a>
-        </div>
-        ` : ''}
-
-        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-        <p style="font-size:12px;color:#a0aec0;margin-bottom:0;">Notificação gerada automaticamente pelo sistema Relatório da Realidade Escolar 2026.</p>
-      </div>
-    </div>
-    `;
+    const html = emailLayoutBase(preview, title, greeting, cards, 'Abrir painel administrativo', link);
 
     MailApp.sendEmail({
       to: dest,
@@ -372,39 +509,55 @@ function enviarEmailCorrecao(escolaNome, responsavelNome, responsavelFuncao, eta
       return false;
     }
     const dest = adminEmail();
-    if (!dest) return false;
-    const rawBase = appUrlParam || appUrl() || '';
+    if (!dest) {
+      Logger.log('Aviso: E-mail da SEMED não configurado. Notificação de correção não enviada.');
+      return false;
+    }
+    const rawBase = appUrlParam || appUrl() || URL_PADRAO_SISTEMA || '';
     const base = /^https?:\/\//i.test(rawBase) ? rawBase : '';
     const link = base ? (base + (base.includes('?') ? '&' : '?') + 'admin=1') : '';
 
-    const html = `
-    <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#2c3e50;max-width:600px;margin:0 auto;border:1px solid #d0e6dc;border-radius:12px;overflow:hidden;background:#ffffff;">
-      <div style="background-color:#205645;padding:24px 20px;text-align:center;color:#ffffff;">
-        <h2 style="margin:0;font-size:18px;letter-spacing:0.5px;">PREFEITURA MUNICIPAL DE LAGOA DA CANOA</h2>
-        <div style="font-size:13px;opacity:0.9;margin-top:4px;">SECRETARIA MUNICIPAL DE EDUCAÇÃO · SEMED</div>
-      </div>
-      <div style="padding:28px 24px;">
-        <h3 style="margin-top:0;color:#2b6cb0;font-size:16px;">Ajuste Enviado para Revisão</h3>
-        <p style="font-size:14px;">A unidade escolar <b>${escolaNome}</b> enviou a correção solicitada para a etapa:</p>
-        
-        <div style="background:#ebf8ff;border-left:4px solid #3182ce;padding:12px 16px;border-radius:4px;margin-bottom:20px;">
-          <strong style="color:#2b6cb0;font-size:14px;">${etapaTitulo || etapaId}</strong><br>
-          <span style="font-size:13px;color:#4a5568;">Responsável: ${responsavelNome || ''} (${responsavelFuncao || ''})</span>
-        </div>
+    const preview = `A escola ${escolaNome} enviou a correção da etapa ${etapaTitulo || etapaId} para revisão.`;
+    const title = 'Ajuste enviado para revisão da SEMED';
+    const greeting = `Olá, equipe da SEMED.<br>A unidade escolar abaixo enviou o ajuste solicitado no Relatório da Realidade Escolar 2026. Acesse o painel para analisar e aprovar:`;
 
-        <p style="font-size:14px;">Acesse o painel administrativo da SEMED para analisar o ajuste enviado e aprovar a etapa.</p>
+    const cards = `
+    <!-- Escola e etapa -->
+    <tr>
+      <td class="pad" style="padding:24px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5" bgcolor="#3A8266" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#EEF5F1" style="padding:14px 18px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:12px;line-height:16px;color:#5B6B64;">Escola</div>
+              <div style="margin-top:2px;font-size:16px;line-height:22px;font-weight:bold;color:#1F5A45;">${escapeHtml(escolaNome)}</div>
+              <div style="margin-top:10px;font-size:12px;line-height:16px;color:#5B6B64;">Etapa corrigida</div>
+              <div style="margin-top:2px;font-size:15px;line-height:21px;font-weight:bold;color:#1B2621;">${escapeHtml(etapaTitulo || etapaId)}</div>
+              <div style="margin-top:10px;font-size:12px;line-height:16px;color:#5B6B64;">Responsável pelo envio</div>
+              <div style="margin-top:2px;font-size:14px;line-height:20px;color:#33413B;">${escapeHtml(responsavelNome || 'Gestor(a)')} (${escapeHtml(responsavelFuncao || 'Equipe Diretiva')})</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
 
-        ${link ? `
-        <div style="text-align:center;margin:28px 0;">
-          <a href="${link}" style="background-color:#205645;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:8px;display:inline-block;box-shadow:0 3px 6px rgba(0,0,0,0.12);">Ver e Aprovar no Painel</a>
-        </div>
-        ` : ''}
+    <!-- Status da revisão -->
+    <tr>
+      <td class="pad" style="padding:14px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5" bgcolor="#2B6CB0" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#EBF8FF" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:13px;line-height:18px;font-weight:bold;color:#2B6CB0;">Situação da etapa</div>
+              <div style="margin-top:6px;font-size:16px;line-height:24px;color:#1A365D;">Aguardando análise e aprovação da SEMED</div>
+              <div style="margin-top:6px;font-size:12px;color:#4A5568;">Enviado em: ${quando(new Date())}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
 
-        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-        <p style="font-size:12px;color:#a0aec0;margin-bottom:0;">Notificação gerada automaticamente pelo sistema Relatório da Realidade Escolar 2026.</p>
-      </div>
-    </div>
-    `;
+    const html = emailLayoutBase(preview, title, greeting, cards, 'Ver e aprovar no painel', link);
 
     MailApp.sendEmail({
       to: dest,
@@ -433,29 +586,42 @@ function testarEnvioEmail() {
     return false;
   }
 
-  const html = `
-  <div style="font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#2c3e50;max-width:600px;margin:0 auto;border:1px solid #d0e6dc;border-radius:12px;overflow:hidden;background:#ffffff;">
-    <div style="background-color:#205645;padding:20px;text-align:center;color:#ffffff;">
-      <h2 style="margin:0;font-size:18px;">PREFEITURA MUNICIPAL DE LAGOA DA CANOA</h2>
-      <div style="font-size:13px;opacity:0.9;margin-top:4px;">SECRETARIA MUNICIPAL DE EDUCAÇÃO · SEMED</div>
-    </div>
-    <div style="padding:24px;">
-      <h3 style="margin-top:0;color:#205645;">Teste de Notificação por E-mail</h3>
-      <p style="font-size:14px;">Este e-mail confirma que o serviço de envio do <b>Relatório da Realidade Escolar 2026</b> foi autorizado e está funcionando perfeitamente!</p>
-      <div style="background:#eef6f3;border-left:4px solid #205645;padding:12px 16px;border-radius:4px;margin:16px 0;">
-        <b>Status:</b> Permissões e serviço MailApp autorizados com sucesso.<br>
-        <b>Data/Hora do Teste:</b> ${new Date().toLocaleString('pt-BR')}
-      </div>
-      <p style="font-size:12px;color:#a0aec0;margin-bottom:0;">Notificação de teste gerada pelo Apps Script.</p>
-    </div>
-  </div>
-  `;
+  const link = appUrl() || URL_PADRAO_SISTEMA || '';
+  const preview = 'Teste de notificação do sistema Relatório da Realidade Escolar 2026.';
+  const title = 'Teste de Notificação por E-mail';
+  const greeting = 'Olá!<br>Este e-mail confirma que o serviço de envio do <strong>Relatório da Realidade Escolar 2026</strong> foi autorizado e está funcionando com o novo padrão visual da SEMED:';
+
+  const cards = `
+  <tr>
+    <td class="pad" style="padding:24px 40px 0 40px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="5" bgcolor="#3A8266" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+          <td bgcolor="#EEF5F1" style="padding:16px 20px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+            <div style="font-size:12px;line-height:16px;color:#5B6B64;">Status do serviço</div>
+            <div style="margin-top:2px;font-size:16px;line-height:22px;font-weight:bold;color:#1F5A45;">✓ MailApp autorizado e operacional</div>
+            
+            <div style="margin-top:12px;font-size:12px;line-height:16px;color:#5B6B64;">Data e hora do teste</div>
+            <div style="margin-top:2px;font-size:14px;line-height:20px;color:#33413B;">${new Date().toLocaleString('pt-BR')}</div>
+            
+            <div style="margin-top:12px;font-size:12px;line-height:16px;color:#5B6B64;">Endereço de destino</div>
+            <div style="margin-top:2px;font-size:14px;line-height:20px;color:#33413B;">${escapeHtml(dest)}</div>
+
+            <div style="margin-top:12px;font-size:12px;line-height:16px;color:#5B6B64;">Endereço web configurado</div>
+            <div style="margin-top:2px;font-size:13px;line-height:19px;color:#1F5A45;word-break:break-all;"><b>${escapeHtml(link)}</b></div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>`;
+
+  const html = emailLayoutBase(preview, title, greeting, cards, 'Acessar Relatório Escolar 2026', link, 'Mensagem de teste gerada pelo editor do Apps Script.');
 
   MailApp.sendEmail({
     to: dest,
     subject: '[SEMED] Teste de Notificação – Relatório Escolar 2026',
     htmlBody: html,
-    name: 'Relatório Escolar 2026'
+    name: 'SEMED Lagoa da Canoa'
   });
 
   Logger.log('Sucesso! E-mail de teste enviado para: ' + dest);

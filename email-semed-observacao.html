@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Observação da SEMED no Relatório da Realidade Escolar</title>
+<style>
+  body { margin:0; padding:0; background:#EEF3F0; }
+  table { border-collapse:collapse; }
+  img { border:0; display:block; }
+  a { color:#1F5A45; }
+  @media only screen and (max-width:620px) {
+    .wrap { width:100% !important; }
+    .pad { padding-left:22px !important; padding-right:22px !important; }
+    .title { font-size:22px !important; line-height:30px !important; }
+    .btn a { display:block !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#EEF3F0;">
+
+<!-- Texto de pré-visualização (aparece na lista da caixa de entrada) -->
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;font-size:1px;line-height:1px;color:#EEF3F0;">
+  A SEMED registrou uma observação sobre o relatório de {{ESCOLA}}.
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEF3F0;">
+<tr><td align="center" style="padding:28px 12px;">
+
+  <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:#FFFFFF;border-radius:16px;overflow:hidden;">
+
+    <!-- Faixa tricolor (cores da logo) -->
+    <tr>
+      <td height="6" style="font-size:0;line-height:0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="60%" height="6" bgcolor="#3A8266" style="font-size:0;line-height:0;">&nbsp;</td>
+            <td width="22%" height="6" bgcolor="#FF7A2B" style="font-size:0;line-height:0;">&nbsp;</td>
+            <td width="18%" height="6" bgcolor="#E8005F" style="font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Cabeçalho com a logo -->
+    <tr>
+      <td align="center" class="pad" style="padding:30px 36px 22px 36px;background:#FFFFFF;">
+        <img src="https://douglas14031999.github.io/relatorio-realidade-escolar-2026/logo-email.png" width="128" alt="Prefeitura de Lagoa da Canoa – Nossa gente, nosso orgulho." style="width:128px;height:auto;margin:0 auto;">
+        <div style="margin-top:18px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#5B6B64;letter-spacing:0.3px;">
+          Secretaria Municipal de Educação
+        </div>
+      </td>
+    </tr>
+
+    <!-- Título -->
+    <tr>
+      <td class="pad" style="padding:8px 40px 0 40px;border-top:1px solid #E3ECE7;">
+        <h1 class="title" style="margin:26px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:33px;font-weight:bold;color:#1F5A45;">
+          A SEMED deixou uma observação no relatório da sua escola
+        </h1>
+      </td>
+    </tr>
+
+    <!-- Saudação -->
+    <tr>
+      <td class="pad" style="padding:16px 40px 0 40px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:25px;color:#33413B;">
+        Olá, <strong style="color:#1B2621;">{{NOME_DIRETOR}}</strong> ({{CARGO}}).<br>
+        A equipe da SEMED analisou o relatório da sua unidade escolar e registrou o ajuste abaixo.
+      </td>
+    </tr>
+
+    <!-- Escola e etapa -->
+    <tr>
+      <td class="pad" style="padding:24px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5" bgcolor="#3A8266" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#EEF5F1" style="padding:14px 18px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:12px;line-height:16px;color:#5B6B64;">Escola</div>
+              <div style="margin-top:2px;font-size:16px;line-height:22px;font-weight:bold;color:#1F5A45;">{{ESCOLA}}</div>
+              <div style="margin-top:10px;font-size:12px;line-height:16px;color:#5B6B64;">Etapa do relatório</div>
+              <div style="margin-top:2px;font-size:15px;line-height:21px;font-weight:bold;color:#1B2621;">{{ETAPA}}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Ajuste solicitado (destaque principal) -->
+    <tr>
+      <td class="pad" style="padding:14px 40px 0 40px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="5" bgcolor="#FF7A2B" style="width:5px;font-size:0;line-height:0;border-radius:3px 0 0 3px;">&nbsp;</td>
+            <td bgcolor="#FFF4EB" style="padding:16px 18px 18px 18px;font-family:Arial,Helvetica,sans-serif;border-radius:0 8px 8px 0;">
+              <div style="font-size:13px;line-height:18px;font-weight:bold;color:#B8470A;">Ajuste solicitado</div>
+              <div style="margin-top:6px;font-size:17px;line-height:26px;color:#2A2018;">{{INSTRUCAO}}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Botão -->
+    <tr>
+      <td align="center" class="pad btn" style="padding:32px 40px 0 40px;">
+        <!--[if mso]>
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{LINK}}" style="height:50px;v-text-anchor:middle;width:300px;" arcsize="16%" stroke="f" fillcolor="#1F5A45">
+          <w:anchorlock/>
+          <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Abrir etapa no relatório</center>
+        </v:roundrect>
+        <![endif]-->
+        <!--[if !mso]><!-- -->
+        <a href="{{LINK}}" target="_blank" style="display:inline-block;background:#1F5A45;color:#FFFFFF;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:20px;font-weight:bold;text-decoration:none;padding:15px 38px;border-radius:8px;border-bottom:3px solid #14402F;">Abrir etapa no relatório</a>
+        <!--<![endif]-->
+      </td>
+    </tr>
+
+    <!-- Link alternativo -->
+    <tr>
+      <td align="center" class="pad" style="padding:22px 40px 34px 40px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#7A8882;">
+        O botão não abriu? Copie e cole este endereço no navegador:<br>
+        <a href="{{LINK}}" target="_blank" style="color:#1F5A45;word-break:break-all;">{{LINK}}</a>
+      </td>
+    </tr>
+
+    <!-- Rodapé -->
+    <tr>
+      <td align="center" class="pad" bgcolor="#1F5A45" style="padding:22px 36px;background:#1F5A45;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:22px;font-weight:bold;color:#FFFFFF;">
+          Nossa gente, nosso orgulho.
+        </div>
+        <div style="margin-top:8px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#B9D4C8;">
+          Prefeitura Municipal de Lagoa da Canoa · Secretaria Municipal de Educação
+        </div>
+      </td>
+    </tr>
+
+  </table>
+
+  <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+    <tr>
+      <td align="center" style="padding:16px 20px 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#7A8882;">
+        Mensagem automática do Relatório da Realidade Escolar 2026. Em caso de dúvida, responda a este e-mail.
+      </td>
+    </tr>
+  </table>
+
+</td></tr>
+</table>
+</body>
+</html>
