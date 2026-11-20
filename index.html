@@ -866,7 +866,31 @@
     }
 
     #rep {
-      display: none
+      display: none;
+    }
+
+    /* Estado de impressão / medição pré-impressão */
+    body.pr #login,
+    body.pr #app,
+    body.pr #adm,
+    body.pr .toast {
+      display: none !important;
+    }
+
+    body.pr {
+      background: #fff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    body.pr #rep {
+      display: block !important;
+      font: 11pt/1.5 Arial, Helvetica, sans-serif !important;
+      color: #000 !important;
+      text-align: justify !important;
+      background: #fff !important;
+      width: 17cm !important;
+      margin: 0 auto !important;
     }
 
     @media print {
@@ -894,7 +918,7 @@
       }
 
       body.pr #rep {
-        display: block;
+        display: block !important;
         font: 11pt/1.5 Arial, Helvetica, sans-serif;
         color: #000;
         text-align: justify;
@@ -2095,9 +2119,14 @@
       // Atualiza dinamicamente a paginação do Sumário e o espaçador da última página
       setTimeout(() => {
         try {
-          const pageH = 888;
+          // Altura útil de conteúdo por folha A4 no tbody:
+          // Folha 29.7cm - margens (2.4cm) - cabeçalho (~2.6cm) - rodapé (~1.6cm) = 23.1cm ≈ 873px (a 96 DPI)
+          const pageH = 873;
           const ident = document.getElementById('sec-ident');
-          if (ident) {
+          const lastTd = document.querySelector('table.rep-layout > tbody > tr > td');
+          const spacer = document.getElementById('rep-last-spacer');
+
+          if (ident && lastTd) {
             const startTop = ident.offsetTop;
             document.querySelectorAll('[data-sum-target]').forEach(sp => {
               const el = document.getElementById(sp.dataset.sumTarget);
@@ -2106,20 +2135,26 @@
                 sp.textContent = Math.floor(diff / pageH) + 3;
               }
             });
-            const lastTd = document.querySelector('table.rep-layout > tbody > tr > td');
-            if (lastTd) {
-              const rem = lastTd.offsetHeight % pageH;
-              if (rem > 0 && rem < pageH - 80) {
-                const spacer = document.getElementById('rep-last-spacer');
-                if (spacer) spacer.style.height = (pageH - rem - 30) + 'px';
-              }
+
+            // Altura do conteúdo corrido a partir da página 3 (sec-ident)
+            const contentH = lastTd.offsetHeight - startTop;
+            const rem = contentH % pageH;
+
+            // Se sobrar espaço na última folha, estende o espaçador empurrando o rodapé para o fim da página
+            if (rem > 0 && rem < pageH - 25) {
+              const needed = Math.floor(pageH - rem - 15);
+              if (spacer) spacer.style.height = needed + 'px';
             }
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
 
         window.print();
-        document.body.classList.remove('pr');
-      }, 300);
+        setTimeout(() => {
+          document.body.classList.remove('pr');
+        }, 500);
+      }, 350);
     }
 
     R.bind.anexo = s => {
