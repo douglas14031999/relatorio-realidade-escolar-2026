@@ -889,8 +889,17 @@
       color: #000 !important;
       text-align: justify !important;
       background: #fff !important;
-      width: 17cm !important;
-      margin: 0 auto !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    body.pr .sec-sg-wrap {
+      break-before: page !important;
+      page-break-before: always !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      padding-top: 10pt;
     }
 
     @media print {
@@ -921,26 +930,39 @@
 
       body.pr #rep {
         display: block !important;
-        font: 11pt/1.5 Arial, Helvetica, sans-serif;
-        color: #000;
-        text-align: justify;
-        background: #fff;
+        font: 11pt/1.5 Arial, Helvetica, sans-serif !important;
+        color: #000 !important;
+        text-align: justify !important;
+        background: #fff !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
 
       /* Capa (Página 1) */
       .cover {
-        width: 21cm;
-        height: 29.7cm;
-        padding: 2.0cm 2.0cm;
-        box-sizing: border-box;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        text-align: center;
-        break-after: page;
-        page-break-after: always;
+        width: 100% !important;
+        max-width: 21cm !important;
+        height: 29.7cm !important;
+        padding: 2.5cm 2.0cm !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        text-align: center !important;
+        break-after: page !important;
+        page-break-after: always !important;
+      }
+
+      /* Bloco isolado de Assinaturas (Sempre na última página e sem quebrar) */
+      .sec-sg-wrap {
+        break-before: page !important;
+        page-break-before: always !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        padding-top: 10pt;
       }
 
       .cover img {
@@ -2096,7 +2118,7 @@
       });
 
       const dt = id.data ? id.data.split('-').reverse().join('/') : '';
-      h += `<h1 id="sec-sg">11. ASSINATURAS</h1><p style="text-indent:0">Lagoa da Canoa – AL, ${esc(dt)}.</p><div class="sg"><div>${esc(F.dir || 'Diretor(a)')}<br>Diretor(a)</div><div>${esc(F.coord || 'Coordenador(a)')}<br>Coordenador(a) pedagógico(a)</div><div>${esc(F.demais || '')}<br>Demais representantes da equipe diretiva</div></div>`;
+      h += `<div class="sec-sg-wrap"><h1 id="sec-sg">11. ASSINATURAS</h1><p style="text-indent:0">Lagoa da Canoa – AL, ${esc(dt)}.</p><div class="sg"><div>${esc(F.dir || 'Diretor(a)')}<br>Diretor(a)</div><div>${esc(F.coord || 'Coordenador(a)')}<br>Coordenador(a) pedagógico(a)</div><div>${esc(F.demais || '')}<br>Demais representantes da equipe diretiva</div></div></div>`;
       h += `<div id="rep-last-spacer"></div>`;
 
       h += `</td>
@@ -2132,22 +2154,25 @@
 
           if (ident && lastTd) {
             const startTop = ident.offsetTop;
+            const sgWrap = document.querySelector('.sec-sg-wrap');
             document.querySelectorAll('[data-sum-target]').forEach(sp => {
               const el = document.getElementById(sp.dataset.sumTarget);
               if (el) {
-                const diff = Math.max(0, el.offsetTop - startTop);
-                sp.textContent = Math.floor(diff / pageH) + 3;
+                if (sp.dataset.sumTarget === 'sec-sg' && sgWrap) {
+                  const priorPages = Math.floor(Math.max(0, sgWrap.offsetTop - startTop - 1) / pageH) + 1;
+                  sp.textContent = priorPages + 3;
+                } else {
+                  const diff = Math.max(0, el.offsetTop - startTop);
+                  sp.textContent = Math.floor(diff / pageH) + 3;
+                }
               }
             });
 
-            // Altura do conteúdo corrido a partir da página 3 (sec-ident)
-            const contentH = lastTd.offsetHeight - startTop;
-            const rem = contentH % pageH;
-
-            // Se sobrar espaço na última folha, estende o espaçador empurrando o rodapé para o fim da página
-            if (rem > 0 && rem < pageH - 25) {
-              const needed = Math.floor(pageH - rem - 15);
-              if (spacer) spacer.style.height = needed + 'px';
+            // Espaçador para ancorar o rodapé na base da folha exclusiva de assinaturas
+            if (spacer && sgWrap) {
+              const sgH = sgWrap.offsetHeight || 290;
+              const needed = Math.max(0, pageH - sgH - 30);
+              spacer.style.height = needed + 'px';
             }
           }
         } catch (e) {
