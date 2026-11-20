@@ -869,37 +869,36 @@
       display: none;
     }
 
-    /* Estado de impressão / medição pré-impressão */
-    body.pr #login,
-    body.pr #app,
-    body.pr #adm,
-    body.pr .toast {
-      display: none !important;
+    /* #rep fica estritamente oculto na interface de tela normal */
+    #rep {
+      display: none;
     }
 
-    body.pr {
-      background: #fff !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
+    /* Na medição pré-impressão em tela, renderiza fora do campo de visão (off-screen)
+       para que a tela do sistema (#app) continue 100% visível no fundo */
     body.pr #rep {
       display: block !important;
-      font: 11pt/1.5 Arial, Helvetica, sans-serif !important;
-      color: #000 !important;
-      text-align: justify !important;
-      background: #fff !important;
-      width: 100% !important;
-      margin: 0 !important;
+      position: fixed !important;
+      left: -99999px !important;
+      top: 0 !important;
+      width: 17cm !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      z-index: -9999 !important;
+    }
+
+    table.rep-layout {
+      width: 17cm !important;
+      margin: 0 auto !important;
+      border-collapse: collapse;
+      border: none !important;
       padding: 0 !important;
     }
 
-    body.pr .sec-sg-wrap {
-      break-before: page !important;
-      page-break-before: always !important;
+    #rep-last-spacer {
+      max-height: 480px !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
-      padding-top: 10pt;
     }
 
     @media print {
@@ -915,21 +914,26 @@
         print-color-adjust: exact !important;
       }
 
-      body.pr #login,
-      body.pr #app,
-      body.pr #adm,
-      body.pr .toast {
-        display: none !important
+      #login,
+      #app,
+      #adm,
+      .toast {
+        display: none !important;
       }
 
-      body.pr {
+      body {
         background: #fff !important;
         margin: 0 !important;
         padding: 0 !important;
       }
 
+      #rep,
       body.pr #rep {
         display: block !important;
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        visibility: visible !important;
         font: 11pt/1.5 Arial, Helvetica, sans-serif !important;
         color: #000 !important;
         text-align: justify !important;
@@ -2168,10 +2172,10 @@
               }
             });
 
-            // Espaçador para ancorar o rodapé na base da folha exclusiva de assinaturas
+            // Espaçador seguro para ancorar o rodapé na base da folha exclusiva de assinaturas sem jamais criar página extra
             if (spacer && sgWrap) {
-              const sgH = sgWrap.offsetHeight || 290;
-              const needed = Math.max(0, pageH - sgH - 30);
+              const sgH = sgWrap.offsetHeight || 282;
+              const needed = Math.max(0, Math.min(480, 770 - sgH));
               spacer.style.height = needed + 'px';
             }
           }
