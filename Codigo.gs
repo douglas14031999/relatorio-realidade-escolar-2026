@@ -42,8 +42,9 @@ function getSS() {
   return _SS;
 }
 
+let _COLUNAS_ESCOLAS_OK = false;
 function garantirColunasEscolas(s) {
-  if (!s) return;
+  if (!s || _COLUNAS_ESCOLAS_OK) return;
   const lastCol = s.getLastColumn();
   if (lastCol === 0) return;
   const header = s.getRange(1, 1, 1, Math.max(lastCol, 6)).getValues()[0].map(h => String(h || '').trim());
@@ -57,6 +58,7 @@ function garantirColunasEscolas(s) {
       s.getRange(1, 6).setValue('Vinculado em').setFontWeight('bold').setBackground('#2f7a62').setFontColor('#fff');
     }
   }
+  _COLUNAS_ESCOLAS_OK = true;
 }
 
 function configurar() {

@@ -1225,7 +1225,17 @@
 
     .hb svg {
       width: 16px;
-      height: 16px
+      height: 16px;
+      transition: transform 0.2s ease
+    }
+
+    .hb.loading svg {
+      animation: hb-spin 0.8s linear infinite
+    }
+
+    @keyframes hb-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .am {
@@ -2125,6 +2135,10 @@
           localStorage.setItem('rre26:session', JSON.stringify({
             mode: 'adm', adm: ADM, escola: ESC, step: i, D, done, OBS, PRAZO, ENC
           }));
+        } else if (ADM) {
+          localStorage.setItem('rre26:session', JSON.stringify({
+            mode: 'adm', adm: ADM
+          }));
         } else if (U && ESC) {
           localStorage.setItem('rre26:session', JSON.stringify({
             mode: 'user',
@@ -2146,7 +2160,10 @@
       } catch (e) {}
     }
     function clearSession() {
-      try { localStorage.removeItem('rre26:session'); } catch (e) {}
+      try {
+        localStorage.removeItem('rre26:session');
+        localStorage.removeItem('rre26:admin_data');
+      } catch (e) {}
     }
     async function logout() {
       const s = S[i];
@@ -2156,15 +2173,18 @@
         if (!confirm('Deseja sair do relatório?')) return;
       }
       await flush();
-      clearSession();
       toggleMenu(false);
       if (ADMV) {
         ADMV = false;
+        ESC = '';
+        saveSession();
         $('#app').style.display = 'none';
         $('#adm').style.display = 'block';
+        loadAdminCache();
         carrega().catch(() => {});
         return;
       }
+      clearSession();
       U = null; ESC = ''; D = {}; done = {}; savedSnapshot = {};
       $('#app').style.display = 'none';
       $('#s4').style.display = 'none';
@@ -2479,7 +2499,15 @@
       }
       if (adm) {
         const bpBtn = $('#bp');
-        if (bpBtn) bpBtn.onclick = () => { ADMV = false; $('#app').style.display = 'none'; $('#adm').style.display = 'block'; carrega().catch(() => { }) };
+        if (bpBtn) bpBtn.onclick = () => {
+          ADMV = false;
+          ESC = '';
+          saveSession();
+          $('#app').style.display = 'none';
+          $('#adm').style.display = 'block';
+          loadAdminCache();
+          carrega().catch(() => {});
+        };
       }
       (R.bind[s.type || 'txt'] || (() => { }))(s);
       if (ro) $('#card').querySelectorAll('input,select,textarea,.rm,#add').forEach(e => { if (e.id !== 'obt') e.disabled = true });
@@ -2840,13 +2868,16 @@
     function comprimir(file) { return new Promise((ok, no) => { const im = new Image(), u = URL.createObjectURL(file); im.onload = () => { const k = Math.min(1, 1400 / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = im.width * k; c.height = im.height * k; c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); ok(c.toDataURL('image/jpeg', .8)) }; im.onerror = no; im.src = u }) }
     async function getFoto(id) { if (PH[id]) return PH[id]; try { const r = await api({ action: 'foto', cpf: U && U.cpf, escola: ESC, id, senha: ADM }); if (r.ok) return PH[id] = r.data } catch (e) { } return '' }
     document.addEventListener('click', async e => {
-      const b = e.target.closest('#obs'); if (!b) return; const s = S[i], t = $('#obt').value.trim(); b.disabled = true;
+      const b = e.target.closest('#obs'); if (!b) return; const s = S[i], t = $('#obt').value.trim();
+      b.disabled = true;
+      const prevObs = OBS[s.id] ? Object.assign({}, OBS[s.id]) : null;
+      const hj = new Date().toISOString().slice(0, 10);
+      if (t) OBS[s.id] = { texto: t, data: hj, status: 'pendente', atendida: '' }; else delete OBS[s.id];
+      const y = scrollY; draw(); scrollTo(0, y);
+      toast(t ? 'Salvando observação…' : 'Removendo observação…');
       try {
         const r = await api({ action: 'admin_obs', senha: ADM, escola: ESC, etapa: s.id, titulo: s.t, texto: t, appUrl: location.origin + location.pathname });
         if (!r.ok) throw r.erro || 0;
-        const hj = new Date().toISOString().slice(0, 10);
-        if (t) OBS[s.id] = { texto: t, data: hj, status: 'pendente', atendida: '' }; else delete OBS[s.id];
-        const y = scrollY; draw(); scrollTo(0, y);
         if (t) {
           if (r.emailEnviado) {
             toast('Observação salva! E-mail de notificação enviado para a escola com sucesso.');
@@ -2857,9 +2888,12 @@
           toast('Observação removida com sucesso.');
         }
       } catch (x) {
-        toast(typeof x === 'string' ? x : 'Não foi possível salvar a observação.')
+        if (prevObs) OBS[s.id] = prevObs; else delete OBS[s.id];
+        draw(); scrollTo(0, y);
+        toast(typeof x === 'string' ? x : 'Não foi possível salvar a observação.');
+      } finally {
+        b.disabled = false;
       }
-      b.disabled = false;
     });
     document.addEventListener('click', async e => {
       const b = e.target.closest('#btn_adm_set_esc_email');
@@ -2871,24 +2905,77 @@
         toast('Informe um e-mail válido.');
         return;
       }
-      b.disabled = true;
-      try {
-        const r = await api({ action: 'admin_set_email', senha: ADM, escola: ESC, email: trimmed });
-        if (!r.ok) throw r.erro || 0;
-        ESC_EMAIL = trimmed;
-        toast('E-mail da escola atualizado com sucesso!');
+      const prevEmail = ESC_EMAIL;
+      ESC_EMAIL = trimmed;
+      if (U && U.emails) U.emails[ESC] = trimmed;
+      try { localStorage.setItem('rre26:esc_email:' + ESC, trimmed); } catch(err){}
+      const curr = AD.find(x => x.escola === ESC);
+      if (curr) curr.email = trimmed;
+      saveAdminCache();
+      draw();
+      toast('E-mail da escola atualizado com sucesso!');
+      api({ action: 'admin_set_email', senha: ADM, escola: ESC, email: trimmed }).then(r => {
+        if (!r || !r.ok) {
+          ESC_EMAIL = prevEmail;
+          if (curr) curr.email = prevEmail;
+          draw();
+          toast((r && r.erro) || 'Não foi possível salvar o e-mail na planilha.');
+        }
+      }).catch(() => {
+        ESC_EMAIL = prevEmail;
+        if (curr) curr.email = prevEmail;
         draw();
-      } catch (x) {
-        toast(typeof x === 'string' ? x : 'Não foi possível salvar o e-mail.');
-        b.disabled = false;
-      }
+        toast('Falha de conexão ao salvar o e-mail na planilha.');
+      });
     });
     document.addEventListener('click', async e => {
-      const b = e.target.closest('#oba'); if (!b) return; const s = S[i]; b.disabled = true;
-      try { const r = await api({ action: 'admin_aprovar', senha: ADM, escola: ESC, etapa: s.id }); if (!r.ok) throw r.erro || 0; OBS[s.id].status = 'aprovada'; OBS[s.id].aprovada = new Date().toISOString().slice(0, 10); const y = scrollY; draw(); scrollTo(0, y) }
-      catch (x) { toast(typeof x === 'string' ? x : 'Não foi possível aprovar.'); b.disabled = false }
+      const b = e.target.closest('#oba'); if (!b) return; const s = S[i];
+      b.disabled = true;
+      const prevObs = OBS[s.id] ? Object.assign({}, OBS[s.id]) : null;
+      if (OBS[s.id]) {
+        OBS[s.id].status = 'aprovada';
+        OBS[s.id].aprovada = new Date().toISOString().slice(0, 10);
+      }
+      const y = scrollY; draw(); scrollTo(0, y);
+      toast('Etapa aprovada com sucesso!');
+      api({ action: 'admin_aprovar', senha: ADM, escola: ESC, etapa: s.id }).then(r => {
+        if (!r || !r.ok) {
+          if (prevObs) OBS[s.id] = prevObs;
+          draw(); scrollTo(0, y);
+          toast((r && r.erro) || 'Não foi possível aprovar na planilha.');
+        }
+      }).catch(() => {
+        if (prevObs) OBS[s.id] = prevObs;
+        draw(); scrollTo(0, y);
+        toast('Falha de conexão ao aprovar.');
+      }).finally(() => {
+        b.disabled = false;
+      });
     });
-    const setPrazo = async p => { if (p && !/^\d{4}-\d{2}-\d{2}$/.test(p)) { toast('Informe uma data válida.'); return } try { const r = await api({ action: 'admin_prazo', senha: ADM, prazo: p }); if (!r.ok) throw r.erro || 0; await carrega() } catch (x) { toast(typeof x === 'string' ? x : 'Não foi possível salvar o prazo.') } };
+    const setPrazo = p => {
+      if (p && !/^\d{4}-\d{2}-\d{2}$/.test(p)) { toast('Informe uma data válida.'); return; }
+      const oldPrazo = PRAZO;
+      PRAZO = p;
+      if ($('#ap')) $('#ap').value = PRAZO;
+      if ($('#apm')) $('#apm').textContent = PRAZO ? 'Edição liberada até ' + brd(PRAZO) + '.' : 'Sem prazo definido.';
+      saveAdminCache();
+      toast(p ? 'Prazo atualizado para ' + brd(p) + '!' : 'Prazo removido!');
+      api({ action: 'admin_prazo', senha: ADM, prazo: p }).then(r => {
+        if (!r || !r.ok) {
+          PRAZO = oldPrazo;
+          if ($('#ap')) $('#ap').value = PRAZO;
+          if ($('#apm')) $('#apm').textContent = PRAZO ? 'Edição liberada até ' + brd(PRAZO) + '.' : 'Sem prazo definido.';
+          saveAdminCache();
+          toast((r && r.erro) || 'Não foi possível salvar o prazo na planilha.');
+        }
+      }).catch(() => {
+        PRAZO = oldPrazo;
+        if ($('#ap')) $('#ap').value = PRAZO;
+        if ($('#apm')) $('#apm').textContent = PRAZO ? 'Edição liberada até ' + brd(PRAZO) + '.' : 'Sem prazo definido.';
+        saveAdminCache();
+        toast('Falha de conexão ao salvar o prazo.');
+      });
+    };
     $('#apb').onclick = () => { const p = $('#ap').value; if (!p) { toast('Escolha a data do prazo.'); return } setPrazo(p) };
     $('#apx').onclick = () => setPrazo('');
     /* painel administrativo */
@@ -2896,16 +2983,48 @@
     $('#lvolt').onclick = e => { e.preventDefault(); $('#s3').style.display = 'none'; $('#s1').style.display = 'block'; $('#e3').textContent = '' };
     $('#shpw').onclick = () => { const f = $('#pw'); f.type = f.type === 'password' ? 'text' : 'password'; $('#shpw').textContent = f.type === 'password' ? '👁' : '🔒' };
     $('#pw').onkeydown = e => { if (e.key === 'Enter') $('#b3').click() };
+
+    function saveAdminCache() {
+      try {
+        localStorage.setItem('rre26:admin_data', JSON.stringify({
+          escolas: AD,
+          prazo: PRAZO,
+          emailAdmin: ($('#aem') && $('#aem').value) || '',
+          savedAt: Date.now()
+        }));
+      } catch (e) {}
+    }
+    function loadAdminCache() {
+      try {
+        const raw = localStorage.getItem('rre26:admin_data');
+        if (!raw) return false;
+        const c = JSON.parse(raw);
+        if (!c || !Array.isArray(c.escolas) || !c.escolas.length) return false;
+        AD = c.escolas;
+        PRAZO = c.prazo || '';
+        if ($('#ap')) $('#ap').value = PRAZO;
+        if ($('#apm')) $('#apm').textContent = PRAZO ? 'Edição liberada até ' + brd(PRAZO) + '.' : 'Sem prazo definido.';
+        const aem = $('#aem'), aemm = $('#aemm');
+        if (aem && c.emailAdmin) aem.value = c.emailAdmin;
+        if (aemm) aemm.textContent = c.emailAdmin ? 'Avisos da SEMED enviados para ' + c.emailAdmin : 'Nenhum e-mail configurado.';
+        adr();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
     async function carrega() {
       const r = await api({ action: 'admin_resumo', senha: ADM, total: S.length });
       if (!r.ok) throw r.erro || 0;
-      AD = r.escolas;
+      AD = r.escolas || [];
       PRAZO = r.prazo || '';
-      $('#ap').value = PRAZO;
-      $('#apm').textContent = PRAZO ? 'Edição liberada até ' + brd(PRAZO) + '.' : 'Sem prazo definido.';
+      if ($('#ap')) $('#ap').value = PRAZO;
+      if ($('#apm')) $('#apm').textContent = PRAZO ? 'Edição liberada até ' + brd(PRAZO) + '.' : 'Sem prazo definido.';
       const aem = $('#aem'), aemm = $('#aemm');
       if (aem) aem.value = r.emailAdmin || '';
       if (aemm) aemm.textContent = r.emailAdmin ? 'Avisos da SEMED enviados para ' + r.emailAdmin : 'Nenhum e-mail configurado.';
+      saveAdminCache();
       adr();
     }
     $('#b3').onclick = async () => {
@@ -2920,6 +3039,23 @@
       const bText = $('#b3').textContent;
       $('#b3').textContent = 'Entrando…';
       ADM = raw;
+      saveSession();
+      const hasCache = loadAdminCache();
+      if (hasCache) {
+        $('#login').style.display = 'none';
+        $('#adm').style.display = 'block';
+        $('#alg').src = LOGO;
+        $('#b3').disabled = false;
+        $('#b3').textContent = bText;
+        carrega().catch(x => {
+          if (raw.toLowerCase() === 'semed2026' && ADM !== 'semed2026') {
+            ADM = 'semed2026';
+            saveSession();
+            carrega().catch(() => {});
+          }
+        });
+        return;
+      }
       try {
         await carrega();
         $('#login').style.display = 'none';
@@ -2928,6 +3064,7 @@
       } catch (x) {
         if (raw.toLowerCase() === 'semed2026' && ADM !== 'semed2026') {
           ADM = 'semed2026';
+          saveSession();
           try {
             await carrega();
             $('#login').style.display = 'none';
@@ -2937,30 +3074,36 @@
           } catch (e2) { }
         }
         ADM = '';
+        clearSession();
         $('#e3').textContent = typeof x === 'string' ? x : 'Não foi possível entrar. Verifique a senha e a conexão.';
       } finally {
         $('#b3').disabled = false;
         $('#b3').textContent = bText;
       }
     };
-    $('#aemb').onclick = async () => {
-      const em = $('#aem').value.trim();
+    $('#aemb').onclick = () => {
+      const em = $('#aem').value.trim().toLowerCase();
       if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
         toast('Informe um e-mail válido para a SEMED.');
         $('#aem').focus();
         return;
       }
-      $('#aemb').disabled = true;
-      try {
-        const r = await api({ action: 'admin_email', senha: ADM, email: em });
-        if (!r.ok) throw r.erro || 0;
-        toast(em ? 'E-mail da SEMED salvo com sucesso.' : 'E-mail da SEMED removido.');
-        await carrega();
-      } catch (x) {
-        toast(typeof x === 'string' ? x : 'Não foi possível salvar o e-mail da SEMED.');
-      } finally {
-        $('#aemb').disabled = false;
-      }
+      const aemm = $('#aemm');
+      const oldTxt = aemm ? aemm.textContent : '';
+      if (aemm) aemm.textContent = em ? 'Avisos da SEMED enviados para ' + em : 'Nenhum e-mail configurado.';
+      saveAdminCache();
+      toast(em ? 'E-mail da SEMED salvo com sucesso.' : 'E-mail da SEMED removido.');
+      api({ action: 'admin_email', senha: ADM, email: em }).then(r => {
+        if (!r || !r.ok) {
+          if (aemm) aemm.textContent = oldTxt;
+          saveAdminCache();
+          toast((r && r.erro) || 'Não foi possível salvar o e-mail da SEMED na planilha.');
+        }
+      }).catch(() => {
+        if (aemm) aemm.textContent = oldTxt;
+        saveAdminCache();
+        toast('Falha de conexão ao salvar o e-mail da SEMED.');
+      });
     };
     document.addEventListener('click', async e => {
       const b = e.target.closest('#btn_save_esc_email');
@@ -2988,7 +3131,22 @@
         b.disabled = false;
       }
     });
-    $('#ar').onclick = () => carrega().catch(() => toast('Não foi possível atualizar o painel.'));
+    let isRefreshingAdm = false;
+    $('#ar').onclick = async () => {
+      if (isRefreshingAdm) return;
+      isRefreshingAdm = true;
+      const b = $('#ar');
+      b.classList.add('loading');
+      try {
+        await carrega();
+        toast('Painel atualizado com a planilha.');
+      } catch (x) {
+        toast('Não foi possível atualizar o painel.');
+      } finally {
+        isRefreshingAdm = false;
+        b.classList.remove('loading');
+      }
+    };
     $('#as').onclick = () => { clearSession(); location.reload(); };
     $('#btn_sair').onclick = logout; $('#btn_troca').onclick = trocaEscola; $('#aq').oninput = () => adr();
     let FST = '';
@@ -3035,34 +3193,208 @@
       if (t) { FST = FST === t.dataset.f ? '' : t.dataset.f; adr(); return }
       if (e.target.closest('[data-clr]')) { FST = ''; $('#aq').value = ''; adr(); $('#aq').focus() }
     });
-    async function acao(b, o, ok) { b.disabled = true; try { const r = await api(Object.assign({ senha: ADM }, o)); if (!r.ok) throw r.erro || 0; await carrega(); if (ok) ok() } catch (x) { toast(typeof x === 'string' ? x : 'Não foi possível concluir a ação.'); b.disabled = false } }
-    $('#ab').onclick = () => { const n = $('#an').value.trim(); if (!n) return; acao($('#ab'), { action: 'admin_add', escola: n }, () => { $('#an').value = ''; $('#ab').disabled = false }) };
-    $('#an').onkeydown = e => { if (e.key === 'Enter') $('#ab').click() };
+
+    function adicionarNovaEscola() {
+      const inp = $('#an');
+      const n = inp.value.trim();
+      if (!n) return;
+      if (n.length < 3) {
+        toast('Informe o nome da escola (mínimo 3 caracteres).');
+        inp.focus();
+        return;
+      }
+      if (AD.some(x => x.escola.toLowerCase() === n.toLowerCase())) {
+        toast('Esta escola já está cadastrada na rede.');
+        inp.focus();
+        return;
+      }
+      const nova = {
+        escola: n,
+        responsavel: '',
+        funcao: '',
+        email: '',
+        cpf: '',
+        feitas: 0,
+        total: S.length,
+        fim: false,
+        iniciada: false,
+        pend: 0,
+        rev: 0,
+        atualizado: ''
+      };
+      AD.push(nova);
+      AD.sort((a, b) => a.escola.localeCompare(b.escola, 'pt-BR'));
+      inp.value = '';
+      adr();
+      saveAdminCache();
+      toast('Unidade "' + n + '" adicionada com sucesso!');
+
+      api({ action: 'admin_add', senha: ADM, escola: n }).then(r => {
+        if (!r || !r.ok) {
+          AD = AD.filter(x => x.escola.toLowerCase() !== n.toLowerCase());
+          adr();
+          saveAdminCache();
+          inp.value = n;
+          toast((r && r.erro) || 'Não foi possível cadastrar a unidade na planilha.');
+        }
+      }).catch(() => {
+        AD = AD.filter(x => x.escola.toLowerCase() !== n.toLowerCase());
+        adr();
+        saveAdminCache();
+        inp.value = n;
+        toast('Falha de conexão ao cadastrar a unidade na planilha.');
+      });
+    }
+    $('#ab').onclick = adicionarNovaEscola;
+    $('#an').onkeydown = e => { if (e.key === 'Enter') adicionarNovaEscola(); };
+
     $('#at').onclick = async e => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.em !== undefined) {
-        const currEsc = AD.find(x => x.escola === b.dataset.em);
+        const escName = b.dataset.em;
+        const currEsc = AD.find(x => x.escola === escName);
         const currEmail = currEsc ? currEsc.email || '' : '';
-        const nv = prompt('Informe o e-mail de contato para "' + b.dataset.em + '":', currEmail);
+        const nv = prompt('Informe o e-mail de contato para "' + escName + '":', currEmail);
         if (nv === null) return;
         const trimmed = nv.trim().toLowerCase();
         if (trimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
           alert('E-mail inválido. Confira o endereço informado.');
           return;
         }
-        acao(b, { action: 'admin_set_email', escola: b.dataset.em, email: trimmed });
+        if (currEsc) {
+          const oldEmail = currEsc.email || '';
+          currEsc.email = trimmed;
+          adr();
+          saveAdminCache();
+          toast(trimmed ? 'E-mail de "' + escName + '" atualizado com sucesso!' : 'E-mail removido.');
+          api({ action: 'admin_set_email', senha: ADM, escola: escName, email: trimmed }).then(r => {
+            if (!r || !r.ok) {
+              currEsc.email = oldEmail;
+              adr();
+              saveAdminCache();
+              toast((r && r.erro) || 'Não foi possível salvar o e-mail na planilha.');
+            }
+          }).catch(() => {
+            currEsc.email = oldEmail;
+            adr();
+            saveAdminCache();
+            toast('Falha de conexão ao salvar o e-mail.');
+          });
+        }
         return;
       }
-      if (b.dataset.l !== undefined) { if (confirm('Liberar o vínculo de "' + b.dataset.l + '"?\n\nA escola voltará a ficar disponível para ser escolhida por outro CPF. As respostas já salvas são mantidas.')) acao(b, { action: 'admin_liberar', escola: b.dataset.l }); return }
-      if (b.dataset.x !== undefined) { if (confirm('Excluir a escola "' + b.dataset.x + '" da lista?')) acao(b, { action: 'admin_excluir', escola: b.dataset.x }); return }
-      if (b.dataset.o !== undefined) {
-        b.disabled = true;
-        try { const r = await api({ action: 'admin_relatorio', senha: ADM, escola: b.dataset.o }); if (!r.ok) throw r.erro || 0; D = {}; for (const k in r.respostas) D[k] = parse(k, r.respostas[k]); done = {}; (r.concluidas || []).forEach(k => done[k] = 1); OBS = r.obs || {}; ESC = b.dataset.o; ESC_EMAIL = r.email || ''; D.ident = D.ident || {}; D.vida = D.vida || {}; D.acomp = D.acomp || {}; D.staff = D.staff || []; D.anexo = D.anexo || []; savedSnapshot = {}; S.forEach(x => { savedSnapshot[x.id] = ser(x) }); ADMV = true; i = 0; $('#adm').style.display = 'none'; $('#app').style.display = 'grid'; draw() }
-        catch (x) { toast(typeof x === 'string' ? x : 'Não foi possível abrir o relatório.') } b.disabled = false; return
+      if (b.dataset.l !== undefined) {
+        const escName = b.dataset.l;
+        if (!confirm('Liberar o vínculo de "' + escName + '"?\n\nA escola voltará a ficar disponível para ser escolhida por outro CPF. As respostas já salvas são mantidas.')) return;
+        const currEsc = AD.find(x => x.escola === escName);
+        if (currEsc) {
+          const prev = { responsavel: currEsc.responsavel, funcao: currEsc.funcao, email: currEsc.email, cpf: currEsc.cpf };
+          currEsc.responsavel = '';
+          currEsc.funcao = '';
+          currEsc.email = '';
+          currEsc.cpf = '';
+          adr();
+          saveAdminCache();
+          toast('Vínculo de "' + escName + '" liberado com sucesso.');
+          api({ action: 'admin_liberar', senha: ADM, escola: escName }).then(r => {
+            if (!r || !r.ok) {
+              Object.assign(currEsc, prev);
+              adr();
+              saveAdminCache();
+              toast((r && r.erro) || 'Não foi possível liberar o vínculo na planilha.');
+            }
+          }).catch(() => {
+            Object.assign(currEsc, prev);
+            adr();
+            saveAdminCache();
+            toast('Falha de conexão ao liberar o vínculo.');
+          });
+        }
+        return;
       }
-      if (b.dataset.g === undefined) return; b.disabled = true; b.textContent = 'Gerando…';
-      try { const r = await api({ action: 'admin_relatorio', senha: ADM, escola: b.dataset.g }); if (!r.ok) throw r.erro || 0; D = {}; for (const k in r.respostas) D[k] = parse(k, r.respostas[k]); ESC = b.dataset.g; D.ident = D.ident || {}; D.vida = D.vida || {}; D.acomp = D.acomp || {}; await print_() } catch (x) { toast(typeof x === 'string' ? x : 'Não foi possível gerar o relatório.') }
-      b.disabled = false; b.textContent = 'Gerar relatório'
+      if (b.dataset.x !== undefined) {
+        const escName = b.dataset.x;
+        if (!confirm('Excluir a escola "' + escName + '" da lista?')) return;
+        const idx = AD.findIndex(x => x.escola === escName);
+        if (idx >= 0) {
+          const removed = AD[idx];
+          AD.splice(idx, 1);
+          adr();
+          saveAdminCache();
+          toast('Escola "' + escName + '" excluída.');
+          api({ action: 'admin_excluir', senha: ADM, escola: escName }).then(r => {
+            if (!r || !r.ok) {
+              AD.splice(idx, 0, removed);
+              adr();
+              saveAdminCache();
+              toast((r && r.erro) || 'Não foi possível excluir a escola na planilha.');
+            }
+          }).catch(() => {
+            AD.splice(idx, 0, removed);
+            adr();
+            saveAdminCache();
+            toast('Falha de conexão ao excluir a escola.');
+          });
+        }
+        return;
+      }
+      if (b.dataset.o !== undefined) {
+        const escName = b.dataset.o;
+        const oldText = b.textContent;
+        b.disabled = true;
+        b.textContent = 'Abrindo…';
+        try {
+          const r = await api({ action: 'admin_relatorio', senha: ADM, escola: escName });
+          if (!r.ok) throw r.erro || 0;
+          D = {};
+          for (const k in r.respostas) D[k] = parse(k, r.respostas[k]);
+          done = {};
+          (r.concluidas || []).forEach(k => done[k] = 1);
+          OBS = r.obs || {};
+          ESC = escName;
+          ESC_EMAIL = r.email || '';
+          D.ident = D.ident || {};
+          D.vida = D.vida || {};
+          D.acomp = D.acomp || {};
+          D.staff = D.staff || [];
+          D.anexo = D.anexo || [];
+          savedSnapshot = {};
+          S.forEach(x => { savedSnapshot[x.id] = ser(x) });
+          ADMV = true;
+          i = 0;
+          saveSession();
+          $('#adm').style.display = 'none';
+          $('#app').style.display = 'grid';
+          draw();
+        } catch (x) {
+          toast(typeof x === 'string' ? x : 'Não foi possível abrir o relatório.');
+        } finally {
+          b.disabled = false;
+          b.textContent = oldText;
+        }
+        return;
+      }
+      if (b.dataset.g !== undefined) {
+        b.disabled = true;
+        const oldText = b.textContent;
+        b.textContent = 'Gerando…';
+        try {
+          const r = await api({ action: 'admin_relatorio', senha: ADM, escola: b.dataset.g });
+          if (!r.ok) throw r.erro || 0;
+          D = {};
+          for (const k in r.respostas) D[k] = parse(k, r.respostas[k]);
+          ESC = b.dataset.g;
+          D.ident = D.ident || {};
+          D.vida = D.vida || {};
+          D.acomp = D.acomp || {};
+          await print_();
+        } catch (x) {
+          toast(typeof x === 'string' ? x : 'Não foi possível gerar o relatório.');
+        } finally {
+          b.disabled = false;
+          b.textContent = oldText;
+        }
+      }
     };
 
     async function restoreSession() {
@@ -3169,6 +3501,7 @@
             $('#login').style.display = 'none';
             $('#adm').style.display = 'block';
             $('#alg').src = LOGO;
+            loadAdminCache();
             carrega().catch(() => {});
           }
         }
